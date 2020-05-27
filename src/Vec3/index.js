@@ -13,6 +13,22 @@ class Vec3 {
     return new Vec3(this.x * -1, this.y * -1, this.z * -1)
   }
 
+  plus(vec) {
+    return Vec3.add(this, vec)
+  }
+
+  minus(vec) {
+    return Vec3.subtract(this, vec)
+  }
+
+  times(factor) {
+    return Vec3.multiply(this, factor)
+  }
+
+  dividedBy(factor) {
+    return Vec3.divide(this, factor)
+  }
+
   plusEquals(vec) {
     this.x += vec.x
     this.y += vec.y
@@ -38,6 +54,10 @@ class Vec3 {
 
   length() {
     return Math.sqrt(this.lengthSquared())
+  }
+
+  asColor() {
+    return new Color(this.x, this.y, this.z)
   }
 
   static add(vec1, vec2) {
@@ -73,11 +93,7 @@ class Vec3 {
   static unitVector(vec) {
     return Vec3.divide(vec, vec.length())
   }
-
-
 }
-
-class Point3 extends Vec3 {}
 
 class Color extends Vec3 {
   get r() {
@@ -92,13 +108,14 @@ class Color extends Vec3 {
     return this.z
   }
 
-  outputFormat() {
-    return `${this.r} ${this.g} ${this.b}`
+  outputPpmFormat() {
+    return this.asArray()
+      .map(i => parseInt(i, 10))
+      .join(' ')
   }
 }
 
 module.exports = {
   Vec3,
-  Point3,
   Color,
 }

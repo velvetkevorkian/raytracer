@@ -25,6 +25,89 @@ describe('Vec3', () => {
     })
   })
 
+  describe('plus()', () => {
+    const vec = new Vec3(1, 2, 3)
+    const result = vec.plus(new Vec3(1, 1, 1))
+    it('adds the fields', () => {
+      expect(result.asArray()).to.deep.equal([2, 3, 4])
+    })
+
+    it("doesn't mutate the original", () => {
+      expect(result).to.not.equal(vec)
+    })
+
+    it('can be chained', () => {
+      const vec2 = new Vec3(1, 2, 3)
+      const vec3 = new Vec3(0.5, 0.5, 0.5)
+      const chained = vec.plus(vec2).plus(vec3)
+      expect(chained.asArray()).to.deep.equal([2.5, 4.5, 6.5])
+    })
+  })
+
+  describe('minus()', () => {
+    const vec = new Vec3(1, 2, 3)
+    const result = vec.minus(new Vec3(3, 2, 1))
+
+    it('subtracts the fields', () => {
+      expect(result.asArray()).to.deep.equal([-2, 0, 2])
+    })
+
+    it("doesn't mutate the original", () => {
+      expect(result).to.not.equal(vec)
+    })
+
+    it('can be chained', () => {
+      const vec2 = new Vec3(1, 2, 3)
+      const vec3 = new Vec3(0.5, 0.5, 0.5)
+      const chained = vec.minus(vec2).minus(vec3)
+      expect(chained.asArray()).to.deep.equal([-0.5, -0.5, -0.5])
+    })
+  })
+
+  describe('times()', () => {
+    const vec = new Vec3(1, 2, 3)
+
+    it('works with vectors', () => {
+      const result = vec.times(new Vec3(2, 2, 1))
+      expect(result.asArray()).to.deep.equal([2, 4, 3])
+    })
+
+    it('works with numbers', () => {
+      const result = vec.times(2)
+      expect(result.asArray()).to.deep.equal([2, 4, 6])
+    })
+
+    it("doesn't mutate the original", () => {
+      const result = vec.times(2)
+      expect(vec.asArray()).to.deep.equal([1, 2, 3])
+      expect(vec).to.not.equal(result)
+    })
+
+    it('can be chained', () => {
+      const result = vec.times(2).times(new Vec3(2, 2, 2))
+      expect(result.asArray()).to.deep.equal([4, 8, 12])
+    })
+  })
+
+  describe('dividedBy()', () => {
+    const vec = new Vec3(1, 2, 3)
+    const result = vec.dividedBy(2)
+
+    it('divides the fields', () => {
+      expect(result.asArray()).to.deep.equal([0.5, 1, 1.5])
+    })
+
+    it("doesn't mutate the original", () => {
+      expect(vec.asArray()).to.deep.equal([1, 2, 3])
+      expect(vec).to.not.equal(result)
+    })
+
+    it('can be chained', () => {
+      const chained = vec.dividedBy(2).dividedBy(2)
+      expect(chained.asArray()).to.deep.equal([0.25, 0.5, 0.75])
+    })
+  })
+
   describe('negative()', () => {
     const vec = new Vec3(1, 2, 3)
     const result = vec.negative()
@@ -129,8 +212,8 @@ describe('Color', () => {
     expect([col.r, col.g, col.b]).to.deep.equal([1, 2, 3])
   })
 
-  it('outputFormat', () => {
-    const result = new Color(1, 2, 3).outputFormat()
+  it('outputPpmFormat', () => {
+    const result = new Color(1.1, 2.5, 3.7).outputPpmFormat()
     expect(result).to.equal('1 2 3')
   })
 })
