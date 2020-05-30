@@ -1,6 +1,4 @@
 const fs = require('fs')
-const process = require('process')
-const readline = require('readline')
 const { Vec3, Color } = require('./src/Vec3')
 const { Ray } = require('./src/Ray')
 
@@ -13,25 +11,33 @@ ${data}
 `)
 
 function rayColor(r) {
-  if(hitSphere(new Vec3(0, 0, -1), 0.5, r)) {
-    return new Color(1, 0, 0)
+  const center = new Vec3(0, 0, -1)
+  const t = hitSphere(center, 0.5, r)
+  if(t > 0) {
+    const normal = Vec3.unitVector(r.at(t).minus(center))
+    return new Color(normal.x + 1, normal.y + 1, normal.z + 1)
+      .times(0.5)
+      .asColor()
   }
   const unitDirection = Vec3.unitVector(r.direction)
-  const t = 0.5 * (unitDirection.y + 1)
+  const bg = 0.5 * (unitDirection.y + 1)
   return new Color(1, 1, 1)
-    .times(1-t)
+    .times(1-bg)
     .plus(new Color(0.5, 0.7, 1)
-    .times(t))
+    .times(bg))
     .asColor()
 }
 
 function hitSphere(center, radius, ray) {
   const oc = ray.origin.minus(center)
-  const a = Vec3.dot(ray.direction, ray.direction)
-  const b = Vec3.dot(oc, ray.direction) * 2
-  const c = Vec3.dot(oc, oc) - (radius * radius)
-  const discriminant = (b * b) - (4 * a * c)
-  return discriminant > 0
+  const a = ray.direction.lengthSquared()
+  const halfB = Vec3.dot(oc, ray.direction)
+  const c = oc.lengthSquared() - (radius * radius)
+  const discriminant = (halfB * halfB) - (a * c)
+  if(discriminant < 0) {
+    return -1
+  }
+  return (-halfB - Math.sqrt(discriminant)) / a
 }
 
 function main() {
