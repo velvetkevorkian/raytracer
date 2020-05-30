@@ -213,7 +213,7 @@ describe('Color', () => {
   })
 
   it('outputPpmFormat', () => {
-    const result = new Color(1.1, 2.5, 3.7).outputPpmFormat()
-    expect(result).to.equal('1 2 3')
+    const result = new Color(0.1, 0.5, 0.7).outputPpmFormat()
+    expect(result).to.equal('25 127 178')
   })
 })

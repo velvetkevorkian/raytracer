@@ -17,7 +17,6 @@ function rayColor(r) {
     .times(1-t)
     .plus(new Color(0.5, 0.7, 1)
     .times(t))
-    .times(255)
     .asColor()
 }
 

@@ -110,7 +110,7 @@ class Color extends Vec3 {
 
   outputPpmFormat() {
     return this.asArray()
-      .map(i => parseInt(i, 10))
+      .map(i => parseInt(i * 255, 10))
       .join(' ')
   }
 }
