@@ -1,4 +1,6 @@
 const fs = require('fs')
+const process = require('process')
+const readline = require('readline')
 const { Vec3, Color } = require('./src/Vec3')
 const { Ray } = require('./src/Ray')
 
@@ -11,6 +13,9 @@ ${data}
 `)
 
 function rayColor(r) {
+  if(hitSphere(new Vec3(0, 0, -1), 0.5, r)) {
+    return new Color(1, 0, 0)
+  }
   const unitDirection = Vec3.unitVector(r.direction)
   const t = 0.5 * (unitDirection.y + 1)
   return new Color(1, 1, 1)
@@ -18,6 +23,15 @@ function rayColor(r) {
     .plus(new Color(0.5, 0.7, 1)
     .times(t))
     .asColor()
+}
+
+function hitSphere(center, radius, ray) {
+  const oc = ray.origin.minus(center)
+  const a = Vec3.dot(ray.direction, ray.direction)
+  const b = Vec3.dot(oc, ray.direction) * 2
+  const c = Vec3.dot(oc, oc) - (radius * radius)
+  const discriminant = (b * b) - (4 * a * c)
+  return discriminant > 0
 }
 
 function main() {
@@ -38,7 +52,9 @@ function main() {
 
   const output = []
   for (let j = imageHeight-1; j >= 0; j-- ) {
-    console.log(`Scanlines remaining: ${j}`)
+    const processed = parseInt(((imageHeight - j) / imageHeight) * 100, 10)
+    console.log(`${processed}%`)
+
     for (let i = 0; i < imageWidth; i++) {
       const u = i / (imageWidth - 1)
       const v = j / (imageHeight - 1)
@@ -53,14 +69,14 @@ function main() {
     }
   }
 
-  console.log('Done. Writing file:')
+  console.log('Writing file...')
 
   fs.writeFile('./output.ppm', ppm(output.join('\n'), imageWidth, imageHeight), (err) => {
     if(err) {
       console.error('error writing file:')
       throw err
     }
-    console.log('finished writing file')
+    console.log('Finished writing file.')
   })
 }
 
