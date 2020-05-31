@@ -156,34 +156,17 @@ describe('Vec3', () => {
     })
   })
 
+  it('unitVector()', () => {
+    const result = new Vec3(1, 2, 3).unitVector()
+    expect(result.asArray()).to.deep.equal([
+      0.2672612419124244,
+      0.5345224838248488,
+      0.8017837257372732
+    ])
+    expect(result.length()).to.equal(1)
+  })
+
   describe('static methods', () => {
-    it('add()', () => {
-      const result = Vec3.add(new Vec3(1, 2, 3), new Vec3(2, 4, 6))
-      expect(result.asArray()).to.deep.equal([3, 6, 9])
-    })
-
-    it('subtract()', () => {
-      const result = Vec3.subtract(new Vec3(2, 4, 6), new Vec3(1, 2, 3))
-      expect(result.asArray()).to.deep.equal([1, 2, 3])
-    })
-
-    describe('multiply()', () => {
-      it('by a number', () => {
-        const result = Vec3.multiply(new Vec3(1, 2, 3), 3)
-        expect(result.asArray()).to.deep.equal([3, 6, 9])
-      })
-
-      it('by a vector', () => {
-        const result = Vec3.multiply(new Vec3(1, 2, 3), new Vec3(2, 4, 6))
-        expect(result.asArray()).to.deep.equal([2, 8, 18])
-      })
-    })
-
-    it('divide()', () => {
-      const result = Vec3.divide(new Vec3(2, 4, 6), 2)
-      expect(result.asArray()).to.deep.equal([1, 2, 3])
-    })
-
     it('dot()', () => {
       const result = Vec3.dot(new Vec3(1, 2, 3), new Vec3(2, 4, 6))
       expect(result).to.equal(28)
@@ -194,15 +177,7 @@ describe('Vec3', () => {
       expect(result.asArray()).to.deep.equal([0, 0, 0])
     })
 
-    it('unitVector()', () => {
-      const result = Vec3.unitVector(new Vec3(1, 2, 3))
-      expect(result.asArray()).to.deep.equal([
-        0.2672612419124244,
-        0.5345224838248488,
-        0.8017837257372732
-      ])
-      expect(result.length()).to.equal(1)
-    })
+
   })
 })
 
@@ -215,5 +190,21 @@ describe('Color', () => {
   it('outputPpmFormat', () => {
     const result = new Color(0.1, 0.5, 0.7).outputPpmFormat()
     expect(result).to.equal('25 127 178')
+  })
+
+  it('has its own times() method that returns a Color', () => {
+    const col = new Color(1, 0, 0)
+    const vec = new Vec3(0.5, 0.5, 0.5)
+    const result = col.times(vec)
+    expect(result instanceof Color).to.equal(true)
+    expect(result.asArray()).to.deep.equal([0.5, 0, 0])
+  })
+
+  it('has its own plus() method that returns a Color', () => {
+    const col = new Color(1, 0, 0)
+    const vec = new Vec3(0.5, 0.5, 0.5)
+    const result = col.plus(vec)
+    expect(result instanceof Color).to.equal(true)
+    expect(result.asArray()).to.deep.equal([1.5, 0.5, 0.5])
   })
 })

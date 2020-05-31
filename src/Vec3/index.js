@@ -14,19 +14,22 @@ class Vec3 {
   }
 
   plus(vec) {
-    return Vec3.add(this, vec)
+    return new Vec3(this.x + vec.x, this.y + vec.y, this.z + vec.z)
   }
 
   minus(vec) {
-    return Vec3.subtract(this, vec)
+    return new Vec3(this.x - vec.x, this.y - vec.y, this.z - vec.z)
   }
 
   times(factor) {
-    return Vec3.multiply(this, factor)
+    if (isNaN(factor)) {
+      return new Vec3(this.x * factor.x, this.y * factor.y, this.z * factor.z)
+    }
+    return new Vec3(this.x * factor, this.y * factor, this.z * factor)
   }
 
   dividedBy(factor) {
-    return Vec3.divide(this, factor)
+    return this.times(1/factor)
   }
 
   plusEquals(vec) {
@@ -56,27 +59,8 @@ class Vec3 {
     return Math.sqrt(this.lengthSquared())
   }
 
-  asColor() {
-    return new Color(this.x, this.y, this.z)
-  }
-
-  static add(vec1, vec2) {
-    return new Vec3(vec1.x + vec2.x, vec1.y + vec2.y, vec1.z + vec2.z)
-  }
-
-  static subtract(vec1, vec2) {
-    return new Vec3(vec1.x - vec2.x, vec1.y - vec2.y, vec1.z - vec2.z)
-  }
-
-  static multiply(vec, factor) {
-    if (isNaN(factor)) {
-      return new Vec3(vec.x * factor.x, vec.y * factor.y, vec.z * factor.z)
-    }
-    return new Vec3(vec.x * factor, vec.y * factor, vec.z * factor)
-  }
-
-  static divide(vec, factor) {
-    return Vec3.multiply(vec, 1/factor)
+  unitVector() {
+    return this.dividedBy(this.length())
   }
 
   static dot(vec1, vec2) {
@@ -88,10 +72,6 @@ class Vec3 {
     const y = vec1.z * vec2.x - vec1.x * vec2.z
     const z = vec1.x * vec2.y - vec1.y * vec2.x
     return new Vec3(x, y, z)
-  }
-
-  static unitVector(vec) {
-    return Vec3.divide(vec, vec.length())
   }
 }
 
@@ -106,6 +86,17 @@ class Color extends Vec3 {
 
   get b() {
     return this.z
+  }
+
+  times(factor) {
+    if (isNaN(factor)) {
+      return new Color(this.x * factor.x, this.y * factor.y, this.z * factor.z)
+    }
+    return new Color(this.x * factor, this.y * factor, this.z * factor)
+  }
+
+  plus(vec) {
+    return new Color(this.x + vec.x, this.y + vec.y, this.z + vec.z)
   }
 
   outputPpmFormat() {

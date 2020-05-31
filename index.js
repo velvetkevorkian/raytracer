@@ -14,18 +14,15 @@ function rayColor(r) {
   const center = new Vec3(0, 0, -1)
   const t = hitSphere(center, 0.5, r)
   if(t > 0) {
-    const normal = Vec3.unitVector(r.at(t).minus(center))
+    const normal = r.at(t).minus(center).unitVector()
     return new Color(normal.x + 1, normal.y + 1, normal.z + 1)
       .times(0.5)
-      .asColor()
   }
-  const unitDirection = Vec3.unitVector(r.direction)
+  const unitDirection = r.direction.unitVector()
   const bg = 0.5 * (unitDirection.y + 1)
   return new Color(1, 1, 1)
     .times(1-bg)
-    .plus(new Color(0.5, 0.7, 1)
-    .times(bg))
-    .asColor()
+    .plus(new Color(0.5, 0.7, 1).times(bg))
 }
 
 function hitSphere(center, radius, ray) {

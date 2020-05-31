@@ -1,5 +1,3 @@
-const { Vec3 } = require('../Vec3')
-
 class Ray {
   constructor(origin, direction) {
     this.origin = origin
@@ -7,10 +5,7 @@ class Ray {
   }
 
   at(t) {
-    return Vec3.add(
-      this.origin,
-      this.direction.times(t)
-    )
+    return this.origin.plus(this.direction.times(t))
   }
 }
 
