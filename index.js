@@ -1,6 +1,7 @@
 const fs = require('fs')
 const { Vec3, Color } = require('./src/Vec3')
 const { Ray } = require('./src/Ray')
+const { Sphere } = require('./src/Hittable')
 
 const ppm = (data, width, height) => (
 `P3
@@ -12,7 +13,8 @@ ${data}
 
 function rayColor(r) {
   const center = new Vec3(0, 0, -1)
-  const t = hitSphere(center, 0.5, r)
+  const sphere = new Sphere(center, 0.5)
+  const t = sphere.hit(r)
   if(t > 0) {
     const normal = r.at(t).minus(center).unitVector()
     return new Color(normal.x + 1, normal.y + 1, normal.z + 1)
@@ -23,18 +25,6 @@ function rayColor(r) {
   return new Color(1, 1, 1)
     .times(1-bg)
     .plus(new Color(0.5, 0.7, 1).times(bg))
-}
-
-function hitSphere(center, radius, ray) {
-  const oc = ray.origin.minus(center)
-  const a = ray.direction.lengthSquared()
-  const halfB = Vec3.dot(oc, ray.direction)
-  const c = oc.lengthSquared() - (radius * radius)
-  const discriminant = (halfB * halfB) - (a * c)
-  if(discriminant < 0) {
-    return -1
-  }
-  return (-halfB - Math.sqrt(discriminant)) / a
 }
 
 function main() {
