@@ -2,6 +2,19 @@ const { Vec3 } = require('../Vec3')
 
 class Hittable {
   constructor() {}
+
+  static hitArray(arr, ray) {
+    let hitAnything = null
+
+    for(const item of arr) {
+      const hitRecord = item.hit(ray)
+      if (hitRecord) {
+        hitAnything = hitRecord
+      }
+    }
+
+    return hitAnything
+  }
 }
 
 class Sphere extends Hittable {

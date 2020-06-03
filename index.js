@@ -1,7 +1,7 @@
 const fs = require('fs')
 const { Vec3, Color } = require('./src/Vec3')
 const { Ray } = require('./src/Ray')
-const { Sphere } = require('./src/Hittable')
+const { Hittable, Sphere } = require('./src/Hittable')
 
 const ppm = (data, width, height) => (
 `P3
@@ -13,8 +13,10 @@ ${data}
 
 function rayColor(r) {
   const center = new Vec3(0, 0, -1)
-  const sphere = new Sphere(center, 0.5)
-  const t = sphere.hit(r)
+  const world = [
+    new Sphere(center, 0.5)
+  ]
+  const t = Hittable.hitArray(world, r)
   if(t > 0) {
     const normal = r.at(t).minus(center).unitVector()
     return new Color(normal.x + 1, normal.y + 1, normal.z + 1)
