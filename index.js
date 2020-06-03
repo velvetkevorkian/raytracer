@@ -27,9 +27,7 @@ function rayColor(r) {
     .plus(new Color(0.5, 0.7, 1).times(bg))
 }
 
-function main() {
-  const aspectRatio = 16/9
-  const imageWidth = 384
+function setupCamera({ aspectRatio = 16/9, imageWidth = 384 }) {
   const imageHeight = parseInt(imageWidth / aspectRatio, 10)
 
   const viewportHeight = 2
@@ -42,6 +40,26 @@ function main() {
     .minus(horizontal.dividedBy(2))
     .minus(vertical.dividedBy(2))
     .minus(new Vec3(0, 0, focalLength))
+
+  return {
+    imageHeight,
+    imageWidth,
+    horizontal,
+    vertical,
+    lowerLeftCorner,
+    origin,
+  }
+}
+
+function main() {
+  const {
+    imageHeight,
+    imageWidth,
+    horizontal,
+    vertical,
+    lowerLeftCorner,
+    origin,
+  } = setupCamera({ aspectRatio: 16/9, imageHeight: 384 })
 
   const output = []
   for (let j = imageHeight-1; j >= 0; j-- ) {
