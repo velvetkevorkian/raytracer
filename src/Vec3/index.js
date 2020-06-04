@@ -9,6 +9,10 @@ class Vec3 {
     return [this.x, this.y, this.z]
   }
 
+  asColor() {
+    return new Color(this.x, this.y, this.z)
+  }
+
   negative() {
     return new Vec3(this.x * -1, this.y * -1, this.z * -1)
   }

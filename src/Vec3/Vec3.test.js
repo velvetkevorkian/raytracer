@@ -13,6 +13,13 @@ describe('Vec3', () => {
     expect(vec.asArray()).to.deep.equal([1, 2, 3])
   })
 
+  it('asColor() returns a color version', () => {
+    const vec = new Vec3(1, 2, 3)
+    const result = vec.asColor()
+    expect(result instanceof Color).to.be.true
+    expect([result.r, result.g, result.b]).to.deep.equal(vec.asArray())
+  })
+
   describe('plusEquals()', () => {
     const vec = new Vec3(1, 2, 3)
     const result = vec.plusEquals(new Vec3(1, 1, 1))
