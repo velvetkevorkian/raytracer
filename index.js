@@ -2,14 +2,7 @@ const fs = require('fs')
 const { Vec3, Color } = require('./src/Vec3')
 const { Ray } = require('./src/Ray')
 const { Hittable, Sphere } = require('./src/Hittable')
-
-const ppm = (data, width, height) => (
-`P3
-${width}
-${height}
-255
-${data}
-`)
+const { progressBar, ppm } = require('./src/utils')
 
 function rayColor(ray, world) {
   const hit = Hittable.hitArray({ arr: world, ray, tMin: 0, tMax: Infinity })
@@ -66,9 +59,15 @@ function main() {
   ]
 
   const output = []
+  const started = Date.now()
+  let totalProgress = 0
+
   for (let j = imageHeight-1; j >= 0; j-- ) {
-    const processed = parseInt(((imageHeight - j) / imageHeight) * 100, 10)
-    console.log(`${processed}%`)
+    const currentProgress = parseInt(((imageHeight - j) / imageHeight) * 100, 10)
+    if (currentProgress > totalProgress) {
+      totalProgress = currentProgress
+      process.stdout.write(`\r${progressBar({ progress: totalProgress })}`)
+    }
 
     for (let i = 0; i < imageWidth; i++) {
       const u = i / (imageWidth - 1)
@@ -83,12 +82,17 @@ function main() {
       output.push(col.outputPpmFormat())
     }
   }
+  process.stdout.write(`\r\n`)
+
+  const totalTime = (Date.now() - started) / 1000
+  const totalPixels = (imageHeight * imageWidth).toLocaleString('en-GB')
+  console.log(`Rendered ${totalPixels} pixels in ${totalTime} seconds`)
 
   console.log('Writing file...')
 
   fs.writeFile('./output.ppm', ppm(output.join('\n'), imageWidth, imageHeight), (err) => {
     if(err) {
-      console.error('error writing file:')
+      console.error('Error writing file:')
       throw err
     }
     console.log('Finished writing file.')
