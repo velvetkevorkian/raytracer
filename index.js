@@ -11,18 +11,15 @@ ${height}
 ${data}
 `)
 
-function rayColor(r) {
-  const center = new Vec3(0, 0, -1)
-  const world = [
-    new Sphere(center, 0.5)
-  ]
-  const t = Hittable.hitArray(world, r)
-  if(t > 0) {
-    const normal = r.at(t).minus(center).unitVector()
-    return new Color(normal.x + 1, normal.y + 1, normal.z + 1)
+function rayColor(ray, world) {
+  const hit = Hittable.hitArray({ arr: world, ray, tMin: 0, tMax: Infinity })
+  if (hit) {
+    return hit.normal
+      .plus(new Color(1, 1, 1))
       .times(0.5)
+      .asColor()
   }
-  const unitDirection = r.direction.unitVector()
+  const unitDirection = ray.direction.unitVector()
   const bg = 0.5 * (unitDirection.y + 1)
   return new Color(1, 1, 1)
     .times(1-bg)
@@ -61,7 +58,12 @@ function main() {
     vertical,
     lowerLeftCorner,
     origin,
-  } = setupCamera({ aspectRatio: 16/9, imageHeight: 384 })
+  } = setupCamera({ aspectRatio: 16/9, imageWidth: 384 })
+
+  const world = [
+    new Sphere(new Vec3(0, 0, -1), 0.5),
+    new Sphere(new Vec3(0, -100.5, -1), 100),
+  ]
 
   const output = []
   for (let j = imageHeight-1; j >= 0; j-- ) {
@@ -76,8 +78,8 @@ function main() {
         .plus(vertical.times(v))
         .minus(origin)
 
-      const r = new Ray(origin, direction)
-      const col = rayColor(r)
+      const ray = new Ray(origin, direction)
+      const col = rayColor(ray, world)
       output.push(col.outputPpmFormat())
     }
   }
