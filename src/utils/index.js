@@ -5,12 +5,13 @@ function progressBar ({progress, total = 100, backgroundCharacter = '\u2591', fo
 }
 
 function ppm (data, width, height) {
-  return `P3
-${width}
-${height}
-255
-${data}
-`
+  return [
+    'P3',
+    width,
+    height,
+    255,
+    data,
+  ].join('\n')
 }
 
 module.exports = {
