@@ -14,7 +14,14 @@ function ppm (data, width, height) {
   ].join('\n')
 }
 
+function random(min, max) {
+  if (!min || !max) return Math.random()
+
+  return min + (max - min) * Math.random()
+}
+
 module.exports = {
   progressBar,
   ppm,
+  random,
 }
