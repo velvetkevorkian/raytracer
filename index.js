@@ -1,7 +1,7 @@
 const fs = require('fs')
 const { Vec3, Color } = require('./src/Vec3')
-const { Ray } = require('./src/Ray')
 const { Hittable, Sphere } = require('./src/Hittable')
+const { Camera } = require('./src/Camera')
 const { progressBar, ppm } = require('./src/utils')
 
 function rayColor(ray, world) {
@@ -19,39 +19,9 @@ function rayColor(ray, world) {
     .plus(new Color(0.5, 0.7, 1).times(bg))
 }
 
-function setupCamera({ aspectRatio = 16/9, imageWidth = 384 }) {
-  const imageHeight = parseInt(imageWidth / aspectRatio, 10)
-
-  const viewportHeight = 2
-  const viewportWidth = viewportHeight * aspectRatio
-  const focalLength = 1
-  const origin = new Vec3(0, 0, 0)
-  const horizontal = new Vec3(viewportWidth, 0, 0)
-  const vertical = new Vec3(0, viewportHeight, 0)
-  const lowerLeftCorner = origin
-    .minus(horizontal.dividedBy(2))
-    .minus(vertical.dividedBy(2))
-    .minus(new Vec3(0, 0, focalLength))
-
-  return {
-    imageHeight,
-    imageWidth,
-    horizontal,
-    vertical,
-    lowerLeftCorner,
-    origin,
-  }
-}
-
 function main() {
-  const {
-    imageHeight,
-    imageWidth,
-    horizontal,
-    vertical,
-    lowerLeftCorner,
-    origin,
-  } = setupCamera({ aspectRatio: 16/9, imageWidth: 384 })
+  const camera = new Camera()
+  const { imageWidth, imageHeight } = camera
 
   const world = [
     new Sphere(new Vec3(0, 0, -1), 0.5),
@@ -72,12 +42,7 @@ function main() {
     for (let i = 0; i < imageWidth; i++) {
       const u = i / (imageWidth - 1)
       const v = j / (imageHeight - 1)
-      const direction = lowerLeftCorner
-        .plus(horizontal.times(u))
-        .plus(vertical.times(v))
-        .minus(origin)
-
-      const ray = new Ray(origin, direction)
+      const ray = camera.getRay(u, v)
       const col = rayColor(ray, world)
       output.push(col.outputPpmFormat())
     }
