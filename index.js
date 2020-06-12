@@ -2,7 +2,7 @@ const fs = require('fs')
 const { Vec3, Color } = require('./src/Vec3')
 const { Hittable, Sphere } = require('./src/Hittable')
 const { Camera } = require('./src/Camera')
-const { progressBar, ppm } = require('./src/utils')
+const { progressBar, ppm, random } = require('./src/utils')
 
 function rayColor(ray, world) {
   const hit = Hittable.hitArray({ arr: world, ray, tMin: 0, tMax: Infinity })
@@ -19,15 +19,18 @@ function rayColor(ray, world) {
     .plus(new Color(0.5, 0.7, 1).times(bg))
 }
 
-function main() {
-  const camera = new Camera()
-  const { imageWidth, imageHeight } = camera
-
-  const world = [
+function buildWorld() {
+  return [
     new Sphere(new Vec3(0, 0, -1), 0.5),
     new Sphere(new Vec3(0, -100.5, -1), 100),
   ]
+}
 
+function main() {
+  const camera = new Camera()
+  const { imageWidth, imageHeight } = camera
+  const samplesPerPixel = 100
+  const world = buildWorld()
   const output = []
   const started = Date.now()
   let totalProgress = 0
@@ -40,11 +43,14 @@ function main() {
     }
 
     for (let i = 0; i < imageWidth; i++) {
-      const u = i / (imageWidth - 1)
-      const v = j / (imageHeight - 1)
-      const ray = camera.getRay(u, v)
-      const col = rayColor(ray, world)
-      output.push(col.outputPpmFormat())
+      let pixelColor = new Color(0, 0, 0)
+      for (let s = 0; s < samplesPerPixel; s ++) {
+        const u = (i + random()) / (imageWidth - 1)
+        const v = (j + random()) / (imageHeight - 1)
+        const ray = camera.getRay(u, v)
+        pixelColor = pixelColor.plus(rayColor(ray, world))
+      }
+      output.push(pixelColor.outputPpmFormat({ samplesPerPixel }))
     }
   }
   process.stdout.write(`\r\n`)

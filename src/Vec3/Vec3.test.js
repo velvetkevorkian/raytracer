@@ -183,8 +183,6 @@ describe('Vec3', () => {
       const result = Vec3.cross(new Vec3(1, 2, 3), new Vec3(2, 4, 6))
       expect(result.asArray()).to.deep.equal([0, 0, 0])
     })
-
-
   })
 })
 
@@ -194,9 +192,21 @@ describe('Color', () => {
     expect([col.r, col.g, col.b]).to.deep.equal([1, 2, 3])
   })
 
-  it('outputPpmFormat', () => {
-    const result = new Color(0.1, 0.5, 0.7).outputPpmFormat()
-    expect(result).to.equal('25 127 178')
+  describe('outputPpmFormat()', () => {
+    it('returns the value as an rgb triplet if samplesPerPixel == 1', () => {
+      const result = new Color(0.1, 0.5, 0.7).outputPpmFormat()
+      expect(result).to.equal('25 127 178')
+    })
+
+    it('returns the average value based on samplesPerPixel', () => {
+      const result = new Color(2, 2, 2).outputPpmFormat({ samplesPerPixel: 2})
+      expect(result).to.equal('255 255 255')
+    })
+
+    it('clamps the value to 0-255', () => {
+      const result = new Color(2, -2, 0.5).outputPpmFormat()
+      expect(result).to.equal('255 0 127')
+    })
   })
 
   it('has its own times() method that returns a Color', () => {

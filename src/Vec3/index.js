@@ -1,3 +1,5 @@
+const { clamp } = require('../utils')
+
 class Vec3 {
   constructor(x, y, z) {
     this.x = x
@@ -103,9 +105,11 @@ class Color extends Vec3 {
     return new Color(this.x + vec.x, this.y + vec.y, this.z + vec.z)
   }
 
-  outputPpmFormat() {
-    return this.asArray()
-      .map(i => parseInt(i * 255, 10))
+  outputPpmFormat({ samplesPerPixel = 1 } = { samplesPerPixel: 1 }) {
+    const scale = 1 / samplesPerPixel
+    return this.times(scale)
+      .asArray()
+      .map(i => clamp(parseInt(i * 255, 10), 0, 255))
       .join(' ')
   }
 }
