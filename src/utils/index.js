@@ -20,8 +20,15 @@ function random(min, max) {
   return min + (max - min) * Math.random()
 }
 
+function clamp(x, min, max) {
+  if (x < min) return min
+  if (x > max) return max
+  return x
+}
+
 module.exports = {
-  progressBar,
+  clamp,
   ppm,
+  progressBar,
   random,
 }
