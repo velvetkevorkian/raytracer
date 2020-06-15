@@ -27,8 +27,10 @@ function buildWorld() {
 }
 
 function main() {
-  const camera = new Camera()
-  const { imageWidth, imageHeight } = camera
+  const imageWidth = 384
+  const aspectRatio = 16/9
+  const camera = new Camera({ imageWidth, aspectRatio })
+  const { imageHeight } = camera
   const samplesPerPixel = 100
   const world = buildWorld()
   const output = []

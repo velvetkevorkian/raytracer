@@ -10,10 +10,10 @@ const defaultOpts = {
 
 class Camera {
   constructor({
-    aspectRatio,
-    focalLength,
-    imageWidth,
-    origin,
+    aspectRatio = 16/9,
+    focalLength = 1,
+    imageWidth = 384,
+    origin = new Vec3(0, 0, 0),
    } = defaultOpts) {
     this.aspectRatio = aspectRatio
     this.imageWidth = imageWidth
