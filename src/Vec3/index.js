@@ -1,4 +1,4 @@
-const { clamp } = require('../utils')
+const { clamp, random } = require('../utils')
 
 class Vec3 {
   constructor(x, y, z) {
@@ -78,6 +78,20 @@ class Vec3 {
     const y = vec1.z * vec2.x - vec1.x * vec2.z
     const z = vec1.x * vec2.y - vec1.y * vec2.x
     return new Vec3(x, y, z)
+  }
+
+  static random(min, max) {
+    if (!min || !max) return new Vec3(random(), random(), random())
+    return new Vec3(random(min, max), random(min, max), random(min, max))
+  }
+
+  static randomInUnitSphere() {
+    let v = Vec3.random(-1, 1)
+    if (v.lengthSquared() >= 1) {
+      return Vec3.randomInUnitSphere()
+    } else {
+      return v
+    }
   }
 }
 

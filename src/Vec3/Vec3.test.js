@@ -183,6 +183,27 @@ describe('Vec3', () => {
       const result = Vec3.cross(new Vec3(1, 2, 3), new Vec3(2, 4, 6))
       expect(result.asArray()).to.deep.equal([0, 0, 0])
     })
+
+    describe('random()', () => {
+      it('with no args returns a vector with 0 >= xyz < 1', () => {
+        const result = Vec3.random()
+        expect(result.x >= 0 && result.x < 1).to.be.true
+        expect(result.y >= 0 && result.y < 1).to.be.true
+        expect(result.z >= 0 && result.z < 1).to.be.true
+      })
+
+      it('with min and max args returns a vector with min >= xyz < max', () => {
+        const result = Vec3.random(10, 10.5)
+        expect(result.x >= 10 && result.x < 10.5).to.be.true
+        expect(result.y >= 10 && result.y < 10.5).to.be.true
+        expect(result.z >= 10 && result.z < 10.5).to.be.true
+      })
+    })
+
+    it('randomInUnitSphere()', () => {
+      const result = Vec3.randomInUnitSphere()
+      expect(result.length() < 1).to.be.true
+    })
   })
 })
 
