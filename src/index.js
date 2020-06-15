@@ -1,16 +1,22 @@
 const fs = require('fs')
 const { Vec3, Color } = require('./Vec3')
+const { Ray } = require('./Ray')
 const { Hittable, Sphere } = require('./Hittable')
 const { Camera } = require('./Camera')
 const { progressBar, ppm, random } = require('./utils')
 
-function rayColor(ray, world) {
-  const hit = Hittable.hitArray({ arr: world, ray, tMin: 0, tMax: Infinity })
+function rayColor(ray, world, depth) {
+  if(depth <= 0) return new Color(0, 0, 0)
+
+  const hit = Hittable.hitArray({ arr: world, ray, tMin: 0.0001, tMax: Infinity })
   if (hit) {
-    return hit.normal
-      .plus(new Color(1, 1, 1))
-      .times(0.5)
-      .asColor()
+    const target = hit.point
+      .plus(hit.normal)
+      .plus(Vec3.randomInUnitSphere())
+
+    const bounce = new Ray(hit.point, target.minus(hit.point))
+
+    return rayColor(bounce, world, depth - 1).times(0.5)
   }
   const unitDirection = ray.direction.unitVector()
   const bg = 0.5 * (unitDirection.y + 1)
@@ -32,6 +38,7 @@ function main() {
   const camera = new Camera({ imageWidth, aspectRatio })
   const { imageHeight } = camera
   const samplesPerPixel = 100
+  const maxDepth = 50
   const world = buildWorld()
   const output = []
   const started = Date.now()
@@ -50,7 +57,7 @@ function main() {
         const u = (i + random()) / (imageWidth - 1)
         const v = (j + random()) / (imageHeight - 1)
         const ray = camera.getRay(u, v)
-        pixelColor = pixelColor.plus(rayColor(ray, world))
+        pixelColor = pixelColor.plus(rayColor(ray, world, maxDepth))
       }
       output.push(pixelColor.outputPpmFormat({ samplesPerPixel }))
     }
