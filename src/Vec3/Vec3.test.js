@@ -215,8 +215,13 @@ describe('Color', () => {
 
   describe('outputPpmFormat()', () => {
     it('returns the value as an rgb triplet if samplesPerPixel == 1', () => {
-      const result = new Color(0.1, 0.5, 0.7).outputPpmFormat()
+      const result = new Color(0.1, 0.5, 0.7).outputPpmFormat({ gamma: 1 })
       expect(result).to.equal('25 127 178')
+    })
+
+    it('corrects for gamma', () => {
+      const result = new Color(0.1, 0.5, 0.7).outputPpmFormat({ gamma: 2 })
+      expect(result).to.equal('80 180 213')
     })
 
     it('returns the average value based on samplesPerPixel', () => {
@@ -225,8 +230,8 @@ describe('Color', () => {
     })
 
     it('clamps the value to 0-255', () => {
-      const result = new Color(2, -2, 0.5).outputPpmFormat()
-      expect(result).to.equal('255 0 127')
+      const result = new Color(2, 1, 0.5).outputPpmFormat()
+      expect(result).to.equal('255 255 180')
     })
   })
 

@@ -119,10 +119,11 @@ class Color extends Vec3 {
     return new Color(this.x + vec.x, this.y + vec.y, this.z + vec.z)
   }
 
-  outputPpmFormat({ samplesPerPixel = 1 } = { samplesPerPixel: 1 }) {
+  outputPpmFormat({ samplesPerPixel = 1, gamma = 2 } = { samplesPerPixel: 1, gamma: 2 }) {
     const scale = 1 / samplesPerPixel
     return this.times(scale)
       .asArray()
+      .map(i => Math.pow(i, 1/gamma))
       .map(i => clamp(parseInt(i * 255, 10), 0, 255))
       .join(' ')
   }
