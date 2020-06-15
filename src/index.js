@@ -1,8 +1,8 @@
 const fs = require('fs')
-const { Vec3, Color } = require('./src/Vec3')
-const { Hittable, Sphere } = require('./src/Hittable')
-const { Camera } = require('./src/Camera')
-const { progressBar, ppm, random } = require('./src/utils')
+const { Vec3, Color } = require('./Vec3')
+const { Hittable, Sphere } = require('./Hittable')
+const { Camera } = require('./Camera')
+const { progressBar, ppm, random } = require('./utils')
 
 function rayColor(ray, world) {
   const hit = Hittable.hitArray({ arr: world, ray, tMin: 0, tMax: Infinity })
