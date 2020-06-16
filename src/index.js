@@ -3,6 +3,7 @@ const { Vec3, Color } = require('./Vec3')
 const { Ray } = require('./Ray')
 const { Hittable, Sphere } = require('./Hittable')
 const { Camera } = require('./Camera')
+const { NormalShadedMaterial } = require('./materials')
 const { progressBar, ppm, random } = require('./utils')
 
 function rayColor(ray, world, depth) {
@@ -10,13 +11,14 @@ function rayColor(ray, world, depth) {
 
   const hit = Hittable.hitArray({ arr: world, ray, tMin: 0.0001, tMax: Infinity })
   if (hit) {
-    const target = hit.point
-      .plus(hit.normal)
-      .plus(Vec3.randomUnitVector())
+    return hit.material.scatter(hit)
+    // const target = hit.point
+    //   .plus(hit.normal)
+    //   .plus(Vec3.randomUnitVector())
 
-    const bounce = new Ray(hit.point, target.minus(hit.point))
+    // const bounce = new Ray(hit.point, target.minus(hit.point))
 
-    return rayColor(bounce, world, depth - 1).times(0.5)
+    // return rayColor(bounce, world, depth - 1).times(0.5)
   }
   const unitDirection = ray.direction.unitVector()
   const bg = 0.5 * (unitDirection.y + 1)
@@ -26,9 +28,10 @@ function rayColor(ray, world, depth) {
 }
 
 function buildWorld() {
+  const material = new NormalShadedMaterial()
   return [
-    new Sphere(new Vec3(0, 0, -1), 0.5),
-    new Sphere(new Vec3(0, -100.5, -1), 100),
+    new Sphere(new Vec3(0, 0, -1), 0.5, material),
+    new Sphere(new Vec3(0, -100.5, -1), 100, material),
   ]
 }
 

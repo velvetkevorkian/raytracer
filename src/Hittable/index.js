@@ -21,10 +21,11 @@ class Hittable {
 }
 
 class Sphere extends Hittable {
-  constructor(center, radius) {
+  constructor(center, radius, material) {
     super()
     this.center = center
     this.radius = radius
+    this.material = material
   }
 
   hit(ray, tMin, tMax) {
@@ -46,6 +47,7 @@ class Sphere extends Hittable {
           point,
           normal: frontFace ? normal : normal.negative(),
           frontFace,
+          material: this.material,
         }
       }
 
@@ -59,6 +61,7 @@ class Sphere extends Hittable {
           point,
           normal: frontFace ? normal : normal.negative(),
           frontFace,
+          material: this.material,
         }
       }
     }
