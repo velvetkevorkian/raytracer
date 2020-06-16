@@ -204,6 +204,11 @@ describe('Vec3', () => {
       const result = Vec3.randomInUnitSphere()
       expect(result.length() < 1).to.be.true
     })
+
+    it('randomUnitVector()', () => {
+      const result = Vec3.randomUnitVector()
+      expect(result.length()).to.equal(1)
+    })
   })
 })
 

@@ -12,7 +12,7 @@ function rayColor(ray, world, depth) {
   if (hit) {
     const target = hit.point
       .plus(hit.normal)
-      .plus(Vec3.randomInUnitSphere())
+      .plus(Vec3.randomUnitVector())
 
     const bounce = new Ray(hit.point, target.minus(hit.point))
 

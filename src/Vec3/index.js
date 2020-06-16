@@ -93,6 +93,13 @@ class Vec3 {
       return v
     }
   }
+
+  static randomUnitVector() {
+    const a = random(0, Math.PI * 2)
+    const z = random(-1, 1)
+    const r = Math.sqrt(1 - (z * z))
+    return new Vec3(r * Math.cos(a), r * Math.sin(a), z)
+  }
 }
 
 class Color extends Vec3 {
