@@ -207,7 +207,7 @@ describe('Vec3', () => {
 
     it('randomUnitVector()', () => {
       const result = Vec3.randomUnitVector()
-      expect(result.length()).to.equal(1)
+      expect(result.length()).to.be.closeTo(1, 0.00000000001) // TODO: wtf?
     })
   })
 })

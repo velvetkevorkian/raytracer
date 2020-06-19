@@ -1,12 +1,13 @@
 const { Color } = require('../Vec3')
 
 class Material {
-  constructor() {
+  constructor() {}
 
-  }
-
-  scatter() {
-    return new Color(0.5, 0.5, 0.5)
+  scatter(hit) {
+    return {
+      attenuation: new Color(0.5, 0.5, 0.5),
+      scatteredRay: hit.normal,
+    }
   }
 }
 
