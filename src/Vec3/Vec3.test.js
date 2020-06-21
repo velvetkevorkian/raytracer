@@ -229,11 +229,6 @@ describe('Color', () => {
       expect(result).to.equal('80 180 213')
     })
 
-    it('returns the average value based on samplesPerPixel', () => {
-      const result = new Color(2, 2, 2).outputPpmFormat({ samplesPerPixel: 2})
-      expect(result).to.equal('255 255 255')
-    })
-
     it('clamps the value to 0-255', () => {
       const result = new Color(2, 1, 0.5).outputPpmFormat()
       expect(result).to.equal('255 255 180')

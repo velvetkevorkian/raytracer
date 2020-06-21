@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 const { expect } = require('chai')
 const {
+  buildPixelArray,
   clamp,
   ppm,
   progressBar,
@@ -15,17 +16,32 @@ const ppmExample =
 foo`
 
 describe('utils', () => {
+  describe('buildPixelArray()', () => {
+    it('returns an array of arrays', () => {
+      const result = buildPixelArray(2, 3)
+      expect(result.length).to.equal(3)
+    })
+
+    it('each array has the right length', () => {
+      const result = buildPixelArray(2, 3)
+      expect(result[2].length).to.equal(2)
+    })
+  })
+
   describe('clamp()', () => {
     it('returns min if x < min', () => {
       expect(clamp(1, 2, 5)).to.equal(2)
     })
+
     it('returns max if x > max', () => {
       expect(clamp(10, 2, 5)).to.equal(5)
     })
+
     it('returns x if min < x < max', () => {
       expect(clamp(3, 2, 5)).to.equal(3)
     })
   })
+
   it('progressBar()', () => {
     const result = progressBar({progress: 2, total: 4, backgroundCharacter: '-', foregroundCharacter: '='})
     expect(result).to.equal('==--')
