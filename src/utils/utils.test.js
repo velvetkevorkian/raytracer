@@ -3,7 +3,6 @@ const { expect } = require('chai')
 const {
   buildPixelArray,
   clamp,
-  ppm,
   progressBar,
   random,
 } = require('.')
@@ -47,10 +46,10 @@ describe('utils', () => {
     expect(result).to.equal('==--')
   })
 
-  it('ppm()', () => {
-    const result = ppm('foo', 100, 100)
-    expect(result).to.equal(ppmExample)
-  })
+  // it('ppm()', () => {
+  //   const result = ppm('foo', 100, 100)
+  //   expect(result).to.equal(ppmExample)
+  // })
 
   describe('random()', () => {
     it('returns a number 0>= x <1 if no arguments', () => {

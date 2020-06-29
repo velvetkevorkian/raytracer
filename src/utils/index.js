@@ -4,16 +4,6 @@ function progressBar ({progress, total = 100, backgroundCharacter = '\u2591', fo
   return(`${foreground}${background}`)
 }
 
-function ppm (data, width, height) {
-  return [
-    'P3',
-    width,
-    height,
-    255,
-    data,
-  ].join('\n')
-}
-
 function random(min, max) {
   if (!min || !max) return Math.random()
 
@@ -38,7 +28,6 @@ function buildPixelArray(width, height) {
 module.exports = {
   buildPixelArray,
   clamp,
-  ppm,
   progressBar,
   random,
 }

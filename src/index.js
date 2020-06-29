@@ -1,36 +1,11 @@
-const fs = require('fs')
 const { Worker } = require('worker_threads')
+const os = require('os')
 const { Color } = require('./Vec3')
 const {
   buildPixelArray,
-  ppm,
   progressBar,
 } = require('./utils')
-
-function writeFile(pixelArray, imageWidth, imageHeight) {
-  console.log(`Writing output.ppm at ${imageWidth}x${imageHeight}px`)
-  const result = pixelArray
-  .map(i => i
-    .map(j => {
-      try {
-        return j.outputPpmFormat()
-      } catch (err) {
-        console.log()
-        return '0 0 0'
-      }
-    })
-    .join(' '))
-  .reverse()
-  .join('\n')
-
-  fs.writeFile('./output.ppm', ppm(result, imageWidth, imageHeight), (err) => {
-    if(err) {
-      console.error('Error writing file:')
-      throw err
-    }
-    console.log('Finished writing file.')
-  })
-}
+const { writePpmFile } = require('./output')
 
 function main() {
   const imageWidth = 384
@@ -38,6 +13,7 @@ function main() {
   const imageHeight = parseInt(imageWidth / aspectRatio, 10)
   const samplesPerPixel = 100
   const maxDepth = 50
+  const threads = os.cpus().length - 2
   const started = Date.now()
   let progressPercent = 0
   const pixelArray = buildPixelArray(imageWidth, imageHeight)
@@ -45,17 +21,15 @@ function main() {
   const totalPixels = (imageHeight * imageWidth)
   let currentPixel = 0
 
-  const worker = new Worker('./src/Renderer/renderWorker.js', {
-    workerData:  {
-      samplesPerPixel,
-      imageWidth,
-      imageHeight,
-      aspectRatio,
-      maxDepth,
-    }
-  })
+  const workerData = {
+    samplesPerPixel,
+    imageWidth,
+    imageHeight,
+    aspectRatio,
+    maxDepth,
+  }
 
-  worker.on('message', data => {
+  function handleMessage(data) {
     pixelArray[data.y][data.x] = new Color(data.r, data.g, data.b)
 
     currentPixel ++
@@ -68,17 +42,29 @@ function main() {
     }
 
     if (currentPixel === totalPixels) {
-      worker.terminate()
+      workers.forEach(w => w.terminate())
       if (showProgress) process.stdout.write(`\r\n`)
       const totalTime = (Date.now() - started) / 1000
       console.log(`Rendered ${totalPixels.toLocaleString('en-GB')} pixels in ${totalTime} seconds`)
-      writeFile(pixelArray, imageWidth, imageHeight)
+      writePpmFile(pixelArray, imageWidth, imageHeight)
     }
+  }
+
+  console.log(`Initialising ${threads} workers`)
+  const workers = Array.from({ length: threads }, () => new Worker('./src/Renderer/renderWorker.js', { workerData }))
+
+  workers.forEach(w => {
+    const id = workers.indexOf(w) + 1
+    w.once('online', () => { console.log(`worker ${id} online`)})
+
+    w.on('message', handleMessage)
+
+    w.once('exit', exitcode => { console.log(`worker ${id} exited with exit code ${exitcode}`)})
   })
 
   for (let j = 0; j < imageHeight; j++ ) {
     for (let i = 0; i < imageWidth; i++) {
-      worker.postMessage({
+      workers[i % threads].postMessage({
         x: i,
         y: j
       })
