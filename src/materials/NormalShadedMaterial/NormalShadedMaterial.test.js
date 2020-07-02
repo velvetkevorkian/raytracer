@@ -1,15 +1,15 @@
 /* eslint-env mocha */
 const { expect } = require('chai')
 const sinon = require('sinon')
-const DiffuseMaterial = require('./DiffuseMaterial.js')
-const { Vec3, Color } = require('../Vec3')
+const NormalShadedMaterial = require('.')
+const { Vec3 } = require('../../Vec3')
 
-describe('DiffuseMaterial', () => {
+describe('NormalShadedMaterial', () => {
   let result, hit
 
   before(() => {
     sinon.stub(Vec3, 'randomUnitVector').returns(new Vec3(0, 0, 0))
-    const material = new DiffuseMaterial(new Color(1, 0, 0))
+    const material = new NormalShadedMaterial()
     hit = {
       t: 0.5,
       point: new Vec3(0, 1, 1),
@@ -24,9 +24,8 @@ describe('DiffuseMaterial', () => {
     sinon.restore()
   })
 
-
-  it('returns attenuation based on the material color', () => {
-    expect(result.attenuation.asArray()).to.deep.equal(hit.material.color.asArray())
+  it('returns attenuation based on the normal direction', () => {
+    expect(result.attenuation.asArray()).to.deep.equal([0.5, 0.5, 1])
   })
 
   it('returns a scattered ray based on the hit normal', () => {

@@ -1,6 +1,6 @@
-const DiffuseMaterial = require('./DiffuseMaterial.js')
+const DiffuseMaterial = require('./DiffuseMaterial')
 const MetalMaterial = require('./MetalMaterial')
-const NormalShadedMaterial = require('./NormalShadedMaterial.js')
+const NormalShadedMaterial = require('./NormalShadedMaterial')
 
 module.exports = {
   DiffuseMaterial,

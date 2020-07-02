@@ -1,6 +1,6 @@
-const Material = require('./Material.js')
-const { Vec3 } = require('../Vec3')
-const { Ray } = require('../Ray')
+const Material = require('../Material.js')
+const { Vec3 } = require('../../Vec3')
+const { Ray } = require('../../Ray')
 
 class NormalShadedMaterial extends Material {
   scatter(hit) {

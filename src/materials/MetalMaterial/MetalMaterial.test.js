@@ -1,9 +1,10 @@
 /* eslint-env mocha */
+/* eslint-disable no-unused-vars */
 const { expect } = require('chai')
 const sinon = require('sinon')
-const MetalMaterial = require('./MetalMaterial.js')
-const { Vec3, Color } = require('../Vec3')
-const { Ray } = require('../Ray')
+const MetalMaterial = require('.')
+const { Vec3, Color } = require('../../Vec3')
+const { Ray } = require('../../Ray')
 
 describe('MetalMaterial', () => {
   it('clamps fuzz to between 0 and 1', () => {

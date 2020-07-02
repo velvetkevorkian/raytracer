@@ -1,5 +1,5 @@
 const { Worker } = require('worker_threads')
-const os = require('os')
+const { cpus } = require('os')
 const { Color } = require('./Vec3')
 const {
   buildPixelArray,
@@ -8,12 +8,12 @@ const {
 const { writePpmFile } = require('./output')
 
 function main() {
-  const imageWidth = 1280
+  const imageWidth = 384
   const aspectRatio = 16/9
   const imageHeight = parseInt(imageWidth / aspectRatio, 10)
-  const samplesPerPixel = 500
-  const maxDepth = 50
-  const threads = os.cpus().length - 1
+  const samplesPerPixel = 50
+  const maxDepth = 25
+  const threads = cpus().length - 1
   const started = Date.now()
   let progressPercent = 0
   const pixelArray = buildPixelArray(imageWidth, imageHeight)
