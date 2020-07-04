@@ -3,16 +3,11 @@ const { expect } = require('chai')
 const {
   buildPixelArray,
   clamp,
+  degreesToRadians,
   progressBar,
+  radiansToDegrees,
   random,
 } = require('.')
-
-const ppmExample =
-`P3
-100
-100
-255
-foo`
 
 describe('utils', () => {
   describe('buildPixelArray()', () => {
@@ -46,11 +41,6 @@ describe('utils', () => {
     expect(result).to.equal('==--')
   })
 
-  // it('ppm()', () => {
-  //   const result = ppm('foo', 100, 100)
-  //   expect(result).to.equal(ppmExample)
-  // })
-
   describe('random()', () => {
     it('returns a number 0>= x <1 if no arguments', () => {
       const result = random()
@@ -63,5 +53,13 @@ describe('utils', () => {
       expect(result >= 0.01).to.be.true
       expect(result < 0.015).to.be.true
     })
+  })
+
+  it('radiansToDegrees', () => {
+    expect(radiansToDegrees(Math.PI)).to.equal(180)
+  })
+
+  it('degreesToRadians', () => {
+    expect(degreesToRadians(180)).to.equal(Math.PI)
   })
 })

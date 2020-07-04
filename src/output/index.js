@@ -37,4 +37,5 @@ function writePpmFile(pixelArray, imageWidth, imageHeight) {
 
 module.exports = {
   writePpmFile,
+  ppm, // for testing
 }

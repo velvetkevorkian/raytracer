@@ -25,9 +25,19 @@ function buildPixelArray(width, height) {
   return Array.from({ length: height }, () => Array.from({ length: width }))
 }
 
+function degreesToRadians(deg) {
+  return deg * (Math.PI/180)
+}
+
+function radiansToDegrees(rad) {
+  return rad * (180/Math.PI)
+}
+
 module.exports = {
   buildPixelArray,
   clamp,
+  degreesToRadians,
   progressBar,
+  radiansToDegrees,
   random,
 }
