@@ -2,7 +2,7 @@ const { workerData, parentPort } = require('worker_threads')
 const { Color } = require('../Vec3')
 const { rayColor } = require('./index.js')
 const { random } = require('../utils')
-const { Camera } = require('../Camera')
+const Camera = require('../Camera')
 const { buildWorld } = require('../World')
 
 const {
@@ -10,10 +10,15 @@ const {
   imageWidth,
   imageHeight,
   maxDepth,
-  aspectRatio
+  aspectRatio,
+  verticalFov,
 } = workerData
 
-const camera = new Camera({ imageWidth, aspectRatio })
+const camera = new Camera({
+  imageWidth,
+  aspectRatio,
+  verticalFov,
+})
 const world = buildWorld()
 
 parentPort.on('message', data => {

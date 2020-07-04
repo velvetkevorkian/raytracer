@@ -13,6 +13,7 @@ function main() {
   const imageHeight = parseInt(imageWidth / aspectRatio, 10)
   const samplesPerPixel = 50
   const maxDepth = 25
+  const verticalFov = 90
   const threads = cpus().length - 1
   const started = Date.now()
   let progressPercent = 0
@@ -29,6 +30,7 @@ function main() {
     imageHeight,
     aspectRatio,
     maxDepth,
+    verticalFov,
   }
 
   function handleMessage(data) {

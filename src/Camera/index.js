@@ -1,11 +1,13 @@
 const { Vec3 } = require('../Vec3')
 const { Ray } = require('../Ray')
+const { degreesToRadians } = require('../utils')
 
 const defaultOpts = {
   aspectRatio: 16/9,
   focalLength: 1,
   imageWidth: 384,
   origin: new Vec3(0, 0, 0),
+  verticalFov: 90,
 }
 
 class Camera {
@@ -14,10 +16,13 @@ class Camera {
     focalLength = 1,
     imageWidth = 384,
     origin = new Vec3(0, 0, 0),
+    verticalFov = 90,
    } = defaultOpts) {
+    const theta = degreesToRadians(verticalFov)
+    const h = Math.tan(theta/2)
     this.aspectRatio = aspectRatio
     this.imageWidth = imageWidth
-    this.viewportHeight = 2
+    this.viewportHeight = h * 2
     this.viewportWidth = this.viewportHeight * this.aspectRatio
     this.imageHeight = parseInt(this.imageWidth / this.aspectRatio, 10)
     this.focalLength = focalLength
@@ -39,4 +44,4 @@ class Camera {
   }
 }
 
-module.exports = { Camera }
+module.exports = Camera
