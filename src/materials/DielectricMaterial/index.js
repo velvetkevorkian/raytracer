@@ -40,6 +40,7 @@ class DielectricMaterial extends Material {
   }
 }
 
+// TODO: move these to Vec3
 function refract(uv, normal, etaiOverEtat) {
   const cosTheta = Vec3.dot(uv.negative(), normal)
   const rOutParallel = normal

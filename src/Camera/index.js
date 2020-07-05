@@ -18,6 +18,7 @@ class Camera {
     origin = new Vec3(0, 0, 0),
     verticalFov = 90,
    } = defaultOpts) {
+    // TODO: do all of these need to be class fields?
     const theta = degreesToRadians(verticalFov)
     const h = Math.tan(theta/2)
     this.aspectRatio = aspectRatio

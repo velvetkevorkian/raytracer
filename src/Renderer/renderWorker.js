@@ -28,6 +28,8 @@ parentPort.on('message', data => {
 
 function renderPixel(x, y) {
   let pixelColor = new Color(0, 0, 0)
+  // TODO: refactor this worker to do one sample at a time
+  // so we don't have to recreate the world+camera in each worker
   for (let s = 0; s < samplesPerPixel; s ++) {
     const u = (x + random()) / (imageWidth - 1)
     const v = (y + random()) / (imageHeight - 1)
