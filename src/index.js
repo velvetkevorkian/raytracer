@@ -49,6 +49,7 @@ function main() {
   }
 
   console.log(`Initialising ${threads} workers`)
+  // TODO: use a proper worker pool instead of dumping everything in upfront
 
   const workers = Array.from({ length: threads }, () => new Worker('./src/Renderer/renderWorker.js', { workerData }))
 

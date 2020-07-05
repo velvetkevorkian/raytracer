@@ -1,5 +1,5 @@
 const { workerData, parentPort } = require('worker_threads')
-const { Color } = require('../Vec3')
+const { Vec3, Color } = require('../Vec3')
 const { rayColor } = require('./index.js')
 const { random } = require('../utils')
 const Camera = require('../Camera')
@@ -15,9 +15,10 @@ const {
 } = workerData
 
 const camera = new Camera({
-  imageWidth,
   aspectRatio,
   verticalFov,
+  lookFrom: new Vec3(-2, 2, 1),
+  lookAt: new Vec3(0, 0, -1),
 })
 const world = buildWorld()
 
