@@ -132,6 +132,13 @@ class Color extends Vec3 {
     return new Color(this.x + vec.x, this.y + vec.y, this.z + vec.z)
   }
 
+  static randomColor(min, max) {
+    if (!min || !max) {
+      return new Color(random(), random(), random())
+    }
+    return new Color(random(min, max), random(min, max), random(min, max))
+  }
+
   outputPpmFormat({ gamma = 2 } = { gamma: 2 }) {
     return this
       .asArray()

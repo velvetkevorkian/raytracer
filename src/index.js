@@ -13,9 +13,9 @@ function main() {
   const imageHeight = parseInt(imageWidth / aspectRatio, 10)
   const samplesPerPixel = 50
   const maxDepth = 25
-  const verticalFov = 90
-  const aperture = 0
-  const threads = cpus().length - 1
+  const verticalFov = 20
+  const aperture = 0.1
+  const threads = 1 // cpus().length - 1
   const started = Date.now()
   let progressPercent = 0
   const pixelArray = buildPixelArray(imageWidth, imageHeight)

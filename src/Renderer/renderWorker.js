@@ -18,8 +18,8 @@ const {
 const camera = new Camera({
   aspectRatio,
   verticalFov,
-  lookFrom: new Vec3(-2, 2, 1),
-  lookAt: new Vec3(0, 0, -1),
+  lookFrom: new Vec3(13, 2, 3),
+  lookAt: new Vec3(0, 0, 0),
   aperture,
 })
 const world = buildWorld()
