@@ -6,20 +6,20 @@ describe('Camera', () => {
   it('sets the default values correctly', () => {
     const camera = new Camera()
     expect(camera.lowerLeftCorner.asArray()).to.deep.equal([
-      -1.7777777777777775,
-      -0.9999999999999999,
-      -1
+      -3.555555555555555,
+      -1.9999999999999998,
+      -2
     ])
 
     expect(camera.horizontal.asArray()).to.deep.equal([
-      3.555555555555555,
+      7.11111111111111,
       0,
       0
     ])
 
     expect(camera.vertical.asArray()).to.deep.equal([
       0,
-      1.9999999999999998,
+      3.9999999999999996,
       0
     ])
   })
@@ -29,9 +29,9 @@ describe('Camera', () => {
     const { origin, direction } = camera.getRay(2, 2)
     expect(origin.asArray()).to.deep.equal([0, 0, 0])
     expect(direction.asArray()).to.deep.equal([
-      5.333333333333332,
-      2.9999999999999996,
-      -1
+      10.666666666666664,
+      5.999999999999999,
+      -2
     ])
   })
 })

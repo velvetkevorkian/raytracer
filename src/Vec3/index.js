@@ -85,6 +85,12 @@ class Vec3 {
     return new Vec3(random(min, max), random(min, max), random(min, max))
   }
 
+  static randomInUnitDisc() {
+    const vec = new Vec3(random(-1, 1), random(-1, 1), 0)
+    if (vec.lengthSquared() < 1) return vec
+    return Vec3.randomInUnitDisc()
+  }
+
   static randomInUnitSphere() {
     let v = Vec3.random(-1, 1)
     if (v.lengthSquared() >= 1) {

@@ -209,6 +209,12 @@ describe('Vec3', () => {
       const result = Vec3.randomUnitVector()
       expect(result.length()).to.be.closeTo(1, 0.00000000001) // TODO: wtf?
     })
+
+    it('randomInUnitDisc', (() => {
+      const result = Vec3.randomInUnitDisc()
+      expect(result.length()).to.be.below(1)
+      expect(result.z).to.equal(0)
+    }))
   })
 })
 

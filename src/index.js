@@ -14,6 +14,7 @@ function main() {
   const samplesPerPixel = 50
   const maxDepth = 25
   const verticalFov = 90
+  const aperture = 0
   const threads = cpus().length - 1
   const started = Date.now()
   let progressPercent = 0
@@ -31,6 +32,7 @@ function main() {
     aspectRatio,
     maxDepth,
     verticalFov,
+    aperture,
   }
 
   function handleMessage(data) {
