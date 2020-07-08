@@ -3,7 +3,7 @@ const { Vec3, Color } = require('../Vec3')
 const { rayColor } = require('./index.js')
 const { random } = require('../utils')
 const Camera = require('../Camera')
-const { buildWorld } = require('../World')
+const { worldFromJson } = require('../World')
 
 const {
   samplesPerPixel,
@@ -13,16 +13,20 @@ const {
   aspectRatio,
   verticalFov,
   aperture,
+  lookFrom,
+  lookAt,
+  worldData,
 } = workerData
 
 const camera = new Camera({
   aspectRatio,
   verticalFov,
-  lookFrom: new Vec3(13, 2, 3),
-  lookAt: new Vec3(0, 0, 0),
+  lookFrom: new Vec3(lookFrom),
+  lookAt: new Vec3(lookAt),
   aperture,
 })
-const world = buildWorld()
+
+const world = worldFromJson(worldData)
 
 parentPort.on('message', data => {
   const { x, y } = data

@@ -2,9 +2,13 @@ const { clamp, random } = require('../utils')
 
 class Vec3 {
   constructor(x, y, z) {
-    this.x = x
-    this.y = y
-    this.z = z
+    if (x instanceof Array && x.length === 3) {
+      [this.x, this.y, this.z] = x
+    } else {
+      this.x = x
+      this.y = y
+      this.z = z
+    }
   }
 
   asArray() {

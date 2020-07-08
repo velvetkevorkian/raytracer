@@ -1,28 +1,34 @@
 const { Worker } = require('worker_threads')
-const { cpus } = require('os')
 const { Color } = require('./Vec3')
+const config = require('./config')
 const {
   buildPixelArray,
   progressBar,
 } = require('./utils')
 const { writePpmFile } = require('./output')
+const { worldAsJson } = require('./World')
 
 function main() {
-  const imageWidth = 384
-  const aspectRatio = 16/9
-  const imageHeight = parseInt(imageWidth / aspectRatio, 10)
-  const samplesPerPixel = 50
-  const maxDepth = 25
-  const verticalFov = 20
-  const aperture = 0.1
-  const threads = 1 // cpus().length - 1
+  const {
+    imageWidth,
+    aspectRatio,
+    imageHeight,
+    samplesPerPixel,
+    maxDepth,
+    verticalFov,
+    aperture,
+    lookFrom,
+    lookAt,
+    threads,
+    showProgress,
+    progressUpdateFrequency
+  } = config()
+
   const started = Date.now()
   let progressPercent = 0
   const pixelArray = buildPixelArray(imageWidth, imageHeight)
-  const showProgress = true
   const totalPixels = (imageHeight * imageWidth)
   let currentPixel = 0
-  const progressUpdateFrequency = 1000
   let progressUpdateInterval = null
 
   const workerData = {
@@ -33,6 +39,9 @@ function main() {
     maxDepth,
     verticalFov,
     aperture,
+    lookFrom,
+    lookAt,
+    worldData: worldAsJson,
   }
 
   function handleMessage(data) {

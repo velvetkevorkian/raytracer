@@ -13,6 +13,11 @@ describe('Vec3', () => {
     expect(vec.asArray()).to.deep.equal([1, 2, 3])
   })
 
+  it('can be created from an array', () => {
+    const vec = new Vec3([0, 1, 2])
+    expect(vec.asArray()).to.deep.equal([0, 1, 2])
+  })
+
   it('asColor() returns a color version', () => {
     const vec = new Vec3(1, 2, 3)
     const result = vec.asColor()

@@ -21,15 +21,15 @@ class Hittable {
 }
 
 class Sphere extends Hittable {
-  constructor(center, radius, material) {
+  constructor({ position, radius, material }) {
     super()
-    this.center = center
+    this.position = position
     this.radius = radius
     this.material = material
   }
 
   hit(ray, tMin, tMax) {
-    const oc = ray.origin.minus(this.center)
+    const oc = ray.origin.minus(this.position)
     const a = ray.direction.lengthSquared()
     const halfB = Vec3.dot(oc, ray.direction)
     const c = oc.lengthSquared() - (this.radius * this.radius)
@@ -40,7 +40,7 @@ class Sphere extends Hittable {
       let t = (-halfB - root) / a
       if (t < tMax && t > tMin) {
         const point = ray.at(t)
-        const normal = point.minus(this.center).dividedBy(this.radius)
+        const normal = point.minus(this.position).dividedBy(this.radius)
         const frontFace = Vec3.dot(ray.direction, normal) < 0
         return {
           t,
@@ -54,7 +54,7 @@ class Sphere extends Hittable {
       t = (-halfB + root) / a
       if (t < tMax && t > tMin) {
         const point = ray.at(t)
-        const normal = point.minus(this.center).dividedBy(this.radius)
+        const normal = point.minus(this.position).dividedBy(this.radius)
         const frontFace = Vec3.dot(ray.direction, normal) < 0
         return {
           t,
