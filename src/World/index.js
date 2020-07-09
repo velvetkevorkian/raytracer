@@ -9,7 +9,7 @@ const {
 } = require('../materials')
 
 function buildWorld() {
-  const x = 11
+  const x = 2
   let smallSpheres = []
   for(let a = -x; a < x; a++) {
     for(let b = -x; b < x; b++) {
