@@ -35,34 +35,34 @@ class Sphere extends Hittable {
     const c = oc.lengthSquared() - (this.radius * this.radius)
     const discriminant = (halfB * halfB) - (a * c)
 
-    if(discriminant > 0) {
-      const root = Math.sqrt(discriminant)
-      let t = (-halfB - root) / a
-      if (t < tMax && t > tMin) {
-        const point = ray.at(t)
-        const normal = point.minus(this.position).dividedBy(this.radius)
-        const frontFace = Vec3.dot(ray.direction, normal) < 0
-        return {
-          t,
-          point,
-          normal: frontFace ? normal : normal.negative(),
-          frontFace,
-          material: this.material,
-        }
-      }
+    if(discriminant <= 0) return null
 
-      t = (-halfB + root) / a
-      if (t < tMax && t > tMin) {
-        const point = ray.at(t)
-        const normal = point.minus(this.position).dividedBy(this.radius)
-        const frontFace = Vec3.dot(ray.direction, normal) < 0
-        return {
-          t,
-          point,
-          normal: frontFace ? normal : normal.negative(),
-          frontFace,
-          material: this.material,
-        }
+    const root = Math.sqrt(discriminant)
+    let t = (-halfB - root) / a
+    if (t < tMax && t > tMin) {
+      const point = ray.at(t)
+      const normal = point.minus(this.position).dividedBy(this.radius)
+      const frontFace = Vec3.dot(ray.direction, normal) < 0
+      return {
+        t,
+        point,
+        normal: frontFace ? normal : normal.negative(),
+        frontFace,
+        material: this.material,
+      }
+    }
+
+    t = (-halfB + root) / a
+    if (t < tMax && t > tMin) {
+      const point = ray.at(t)
+      const normal = point.minus(this.position).dividedBy(this.radius)
+      const frontFace = Vec3.dot(ray.direction, normal) < 0
+      return {
+        t,
+        point,
+        normal: frontFace ? normal : normal.negative(),
+        frontFace,
+        material: this.material,
       }
     }
 
