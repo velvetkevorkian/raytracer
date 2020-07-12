@@ -20,6 +20,37 @@ class Hittable {
   }
 }
 
+class Plane extends Hittable {
+  constructor({ point, vector, material }) {
+    super()
+    this.point = point
+    this.vector = vector
+    this.material = material
+  }
+
+  hit(ray, tMin, tMax) {
+    const { point, vector } = this
+    const { direction, origin } = ray
+    const discriminant = Vec3.dot(direction, vector)
+
+    if (Math.abs(discriminant) <= 0.00001) {
+      // ray and plane are parallel and never intersect
+      return null
+    }
+    const t = Vec3.dot(point.minus(origin), vector) / discriminant
+    const frontFace = Vec3.dot(direction, vector) < 0
+
+    if (t < tMin || t > tMax) return null
+    return {
+      t,
+      point: ray.at(t),
+      normal: frontFace ? vector : vector.negative(),
+      frontFace: true,
+      material: this.material,
+    }
+  }
+}
+
 class Sphere extends Hittable {
   constructor({ position, radius, material }) {
     super()
@@ -73,4 +104,5 @@ class Sphere extends Hittable {
 module.exports = {
   Hittable,
   Sphere,
+  Plane,
 }

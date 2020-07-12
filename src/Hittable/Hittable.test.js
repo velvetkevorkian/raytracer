@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 const { expect } = require('chai')
-const { Hittable, Sphere } = require('.')
+const { Hittable, Sphere, Plane } = require('.')
 const { Vec3 } = require('../Vec3')
 const { Ray } = require('../Ray')
 
@@ -92,6 +92,17 @@ describe('Sphere', () => {
       const ray = new Ray(new Vec3(0, 0.999, 0), new Vec3(0, 1, 0))
       const result = sphere.hit(ray, tMin, tMax)
       expect(result.normal.asArray()).to.deep.equal([-0, -1, -0])
+    })
+  })
+})
+
+describe.only('Plane', () => {
+  describe('hit()', () => {
+    it('returns null if the ray and the plane are parallel', () => {
+      const plane = new Plane({ point: new Vec3(0, 0, 0), vector: new Vec3(0, 1, 0) })
+      const ray = new Ray(new Vec3(0, 0, 0), new Vec3(1, 0, 0))
+      const result = plane.hit(ray, tMin, tMax)
+      expect(result).to.be.null
     })
   })
 })

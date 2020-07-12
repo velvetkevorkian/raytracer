@@ -1,5 +1,5 @@
 const { Vec3, Color } = require('../Vec3')
-const { Sphere } = require('../Hittable')
+const { Sphere, Plane } = require('../Hittable')
 const { random } = require('../utils')
 const {
   DielectricMaterial,
@@ -66,9 +66,9 @@ function buildWorld() {
   return [
     {
       geometry: {
-        type: 'Sphere',
-        position: { x: 0, y: -1000, z: 0 },
-        radius: 1000,
+        type: 'Plane',
+        position: { x: 0, y: 0, z: 0 },
+        normal: { x: 0, y: 1, z: 0 }
       },
       material: {
         type: 'DiffuseMaterial',
@@ -123,6 +123,16 @@ function buildGeometry(geometry) {
       return new Sphere({
         position: new Vec3(x, y, z),
         radius,
+      })
+    }
+
+    case 'Plane': {
+      const { position, normal } = geometry
+      const { x: px, y: py, z: pz } = position
+      const { x: nx, y: ny, z: nz } = normal
+      return new Plane({
+        point: new Vec3(px, py, pz),
+        vector: new Vec3(nx, ny, nz)
       })
     }
 
