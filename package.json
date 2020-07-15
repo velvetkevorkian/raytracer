@@ -9,7 +9,8 @@
   },
   "scripts": {
     "start": "node src/index.js",
-    "test": "nyc --reporter=text mocha --recursive \"./src/**/*.test.js\"",
+    "test": "mocha --recursive \"./src/**/*.test.js\"",
+    "coverage": "nyc --reporter=text mocha --recursive \"./src/**/*.test.js\"",
     "watch": "mocha --watch --reporter min --recursive \"./src/**/*.test.js\"",
     "lint": "eslint src"
   },
