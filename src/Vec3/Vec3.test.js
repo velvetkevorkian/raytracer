@@ -25,18 +25,6 @@ describe('Vec3', () => {
     expect([result.r, result.g, result.b]).to.deep.equal(vec.asArray())
   })
 
-  describe('plusEquals()', () => {
-    const vec = new Vec3(1, 2, 3)
-    const result = vec.plusEquals(new Vec3(1, 1, 1))
-    it('adds the input vector', () => {
-      expect(vec.asArray()).to.deep.equal([2, 3, 4])
-    })
-
-    it('mutates and returns itself', () => {
-      expect(result).to.equal(vec)
-    })
-  })
-
   describe('plus()', () => {
     const vec = new Vec3(1, 2, 3)
     const result = vec.plus(new Vec3(1, 1, 1))
@@ -173,7 +161,7 @@ describe('Vec3', () => {
     expect(result.asArray()).to.deep.equal([
       0.2672612419124244,
       0.5345224838248488,
-      0.8017837257372732
+      0.8017837257372732,
     ])
     expect(result.length()).to.equal(1)
   })

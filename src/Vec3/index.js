@@ -1,6 +1,13 @@
 const { clamp, random } = require('../utils')
 
 class Vec3 {
+  /**
+   * Create a vec3 instance from x,y,z params or an array [x, y, z]
+   *
+   * @param {number|Array} x - vector's x coordinate
+   * @param {number} y - vector's y coordinate
+   * @param {number} z - vector's z coordinate
+   */
   constructor(x, y, z) {
     if (x instanceof Array && x.length === 3) {
       [this.x, this.y, this.z] = x
@@ -23,14 +30,26 @@ class Vec3 {
     return new Vec3(this.x * -1, this.y * -1, this.z * -1)
   }
 
+  /**
+   * @param {Vec3} vec - the vector to add
+   * @returns {Vec3} - a new Vec3 instance
+   */
   plus(vec) {
     return new Vec3(this.x + vec.x, this.y + vec.y, this.z + vec.z)
   }
 
+  /**
+   * @param {Vec3} vec - the vector to subtract
+   * @returns {Vec3} - a new Vec3 instance
+   */
   minus(vec) {
     return new Vec3(this.x - vec.x, this.y - vec.y, this.z - vec.z)
   }
 
+  /**
+   * @param {Vec3|number} factor - the number or vector to multiply by
+   * @returns { Vec3} - a new Vec3 instance
+   */
   times(factor) {
     if (isNaN(factor)) {
       return new Vec3(this.x * factor.x, this.y * factor.y, this.z * factor.z)
@@ -38,15 +57,12 @@ class Vec3 {
     return new Vec3(this.x * factor, this.y * factor, this.z * factor)
   }
 
+  /**
+   * @param {number} factor - the number to divide by
+   * @returns {Vec3} - a new Vec3 instance
+   */
   dividedBy(factor) {
     return this.times(1/factor)
-  }
-
-  plusEquals(vec) {
-    this.x += vec.x
-    this.y += vec.y
-    this.z += vec.z
-    return this
   }
 
   timesEquals(x) {
@@ -73,10 +89,24 @@ class Vec3 {
     return this.dividedBy(this.length())
   }
 
+  /**
+   * Get the dot product of two vectors
+   *
+   * @param {Vec3} vec1 - the first vector
+   * @param {Vec3} vec2 - the second vector
+   * @returns {number} - the dot product of the two vectors
+   */
   static dot(vec1, vec2) {
     return (vec1.x * vec2.x) + (vec1.y * vec2.y) + (vec1.z * vec2.z)
   }
 
+  /**
+   * Get the cross product of two vectors
+   *
+   * @param {Vec3} vec1 - the first vector
+   * @param {Vec3} vec2 - the second vector
+   * @returns {Vec3} - the cross product of the two vectors
+   */
   static cross(vec1, vec2) {
     const x = vec1.y * vec2.z - vec1.z * vec2.y
     const y = vec1.z * vec2.x - vec1.x * vec2.z

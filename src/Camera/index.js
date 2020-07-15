@@ -19,7 +19,7 @@ class Camera {
     up = new Vec3(0, 1, 0),
     verticalFov = 90,
     aperture = 0,
-   } = defaultOpts) {
+  } = defaultOpts) {
     this.lookFrom = lookFrom
     this.lensRadius = aperture / 2
     const focusDist = lookFrom.minus(lookAt).length()

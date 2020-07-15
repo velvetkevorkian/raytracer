@@ -7,8 +7,17 @@
     "browser": true,
     "node": true
   },
-  "extends": "eslint:recommended",
+  "plugins": [
+    "jsdoc"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:jsdoc/recommended"
+  ],
   "rules": {
+    "comma-dangle": ["warn", "always-multiline"],
+    "indent": ["warn", 2],
+    "no-unneeded-ternary": ["warn"],
     "semi": ["warn", "never"]
   }
 }
