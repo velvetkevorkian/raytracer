@@ -4,7 +4,7 @@ class Vec3 {
   /**
    * Create a vec3 instance from x,y,z params or an array [x, y, z]
    *
-   * @param {number|Array} x - vector's x coordinate
+   * @param {number|Array} x - vector's x coordinate or an array of numbers
    * @param {number} y - vector's y coordinate
    * @param {number} z - vector's z coordinate
    */
@@ -18,37 +18,58 @@ class Vec3 {
     }
   }
 
+  /**
+   * Returns the vector's x, y, and z components as an array [x, y, z]
+   *
+   * @returns {Array}
+   */
   asArray() {
     return [this.x, this.y, this.z]
   }
 
+  /**
+   * Returns the vector cast to a Color instance
+   *
+   * @returns {Color}
+   */
   asColor() {
     return new Color(this.x, this.y, this.z)
   }
 
+  /**
+   * Returns the vector * -1
+   *
+   * @returns {Vec3} a new Vec3 instance
+   */
   negative() {
     return new Vec3(this.x * -1, this.y * -1, this.z * -1)
   }
 
   /**
+   * Add a vector to another vector
+   *
    * @param {Vec3} vec - the vector to add
-   * @returns {Vec3} - a new Vec3 instance
+   * @returns {Vec3} a new Vec3 instance
    */
   plus(vec) {
     return new Vec3(this.x + vec.x, this.y + vec.y, this.z + vec.z)
   }
 
   /**
+   * Subtract a vector from another vector
+   *
    * @param {Vec3} vec - the vector to subtract
-   * @returns {Vec3} - a new Vec3 instance
+   * @returns {Vec3} a new Vec3 instance
    */
   minus(vec) {
     return new Vec3(this.x - vec.x, this.y - vec.y, this.z - vec.z)
   }
 
   /**
+   * Multiply a vector by a number or another vector
+   *
    * @param {Vec3|number} factor - the number or vector to multiply by
-   * @returns { Vec3} - a new Vec3 instance
+   * @returns { Vec3} a new Vec3 instance
    */
   times(factor) {
     if (isNaN(factor)) {
@@ -58,13 +79,21 @@ class Vec3 {
   }
 
   /**
+   * Divide a vector by a number
+   *
    * @param {number} factor - the number to divide by
-   * @returns {Vec3} - a new Vec3 instance
+   * @returns {Vec3} a new Vec3 instance
    */
   dividedBy(factor) {
     return this.times(1/factor)
   }
 
+  /**
+   * Multiply the current vector by a number. Mutates `this`
+   *
+   * @param {number} x - the number to multiply by
+   * @returns {Vec3} the current Vec3 instance
+   */
   timesEquals(x) {
     this.x *= x
     this.y *= x
@@ -72,19 +101,36 @@ class Vec3 {
     return this
   }
 
+  /**
+   * Divide the current vector by a number. Mutates `this`
+   *
+   * @param {number} x - the number to divide by
+   * @returns {Vec3} the current Vec3 instance
+   */
   divideEquals(x) {
     this.timesEquals(1/x)
     return this
   }
 
+  /**
+   * @returns {number}
+   */
   lengthSquared() {
     return (this.x * this.x) + (this.y * this.y) + (this.z * this.z)
   }
 
+  /**
+   * @returns {number}
+   */
   length() {
     return Math.sqrt(this.lengthSquared())
   }
 
+  /**
+   * Get the current vector normalised so length === 1
+   *
+   * @returns {Vec3} a new Vec3 instance
+   */
   unitVector() {
     return this.dividedBy(this.length())
   }
@@ -94,7 +140,7 @@ class Vec3 {
    *
    * @param {Vec3} vec1 - the first vector
    * @param {Vec3} vec2 - the second vector
-   * @returns {number} - the dot product of the two vectors
+   * @returns {number}
    */
   static dot(vec1, vec2) {
     return (vec1.x * vec2.x) + (vec1.y * vec2.y) + (vec1.z * vec2.z)
@@ -105,7 +151,7 @@ class Vec3 {
    *
    * @param {Vec3} vec1 - the first vector
    * @param {Vec3} vec2 - the second vector
-   * @returns {Vec3} - the cross product of the two vectors
+   * @returns {Vec3}
    */
   static cross(vec1, vec2) {
     const x = vec1.y * vec2.z - vec1.z * vec2.y
@@ -114,6 +160,14 @@ class Vec3 {
     return new Vec3(x, y, z)
   }
 
+  /**
+   * Get a Vec3 with random x, y and z.
+   * 0 > xyz < 1 unless both min and max are specified
+   *
+   * @param {number} min - minimum value for xyz
+   * @param {number} max - maximum value for xyz
+   * @returns {Vec3} a Vec3 with random values
+   */
   static random(min, max) {
     if (!min || !max) return new Vec3(random(), random(), random())
     return new Vec3(random(min, max), random(min, max), random(min, max))
@@ -126,12 +180,9 @@ class Vec3 {
   }
 
   static randomInUnitSphere() {
-    let v = Vec3.random(-1, 1)
-    if (v.lengthSquared() >= 1) {
-      return Vec3.randomInUnitSphere()
-    } else {
-      return v
-    }
+    const vec = Vec3.random(-1, 1)
+    if (vec.lengthSquared() < 1) return vec
+    return Vec3.randomInUnitSphere()
   }
 
   static randomUnitVector() {
@@ -139,6 +190,19 @@ class Vec3 {
     const z = random(-1, 1)
     const r = Math.sqrt(1 - (z * z))
     return new Vec3(r * Math.cos(a), r * Math.sin(a), z)
+  }
+
+  /**
+   * Simulate the reflection of a vector against a surface normal
+   *
+   * @param {Vec3} v - the inbound vector
+   * @param {Vec3} n - the surface normal
+   * @returns {Vec3} the reflected vector
+   */
+  static reflect(v, n) {
+    return v.minus(n
+      .times(Vec3.dot(v, n))
+      .times(2))
   }
 }
 
@@ -166,11 +230,8 @@ class Color extends Vec3 {
     return new Color(this.x + vec.x, this.y + vec.y, this.z + vec.z)
   }
 
-  static randomColor(min, max) {
-    if (!min || !max) {
-      return new Color(random(), random(), random())
-    }
-    return new Color(random(min, max), random(min, max), random(min, max))
+  static randomColor() {
+    return new Color(random(), random(), random())
   }
 
   outputPpmFormat({ gamma = 2 } = { gamma: 2 }) {

@@ -12,7 +12,7 @@ class MetalMaterial extends Material {
 
   scatter(hit, ray) {
     const { normal, point } = hit
-    const reflected = this.reflect(ray.direction.unitVector(), normal)
+    const reflected = Vec3.reflect(ray.direction.unitVector(), normal)
     const fuzzed = Vec3.randomInUnitSphere()
       .times(this.fuzz)
       .plus(reflected)
@@ -20,13 +20,6 @@ class MetalMaterial extends Material {
     return Vec3.dot(scatteredRay.direction, normal) > 0
       ? { attenuation: this.color, scatteredRay }
       : {}
-  }
-
-  reflect(v, n) {
-    return v.minus(n
-      .times(Vec3.dot(v, n))
-      .times(2)
-    )
   }
 }
 

@@ -15,9 +15,16 @@
     "plugin:jsdoc/recommended"
   ],
   "rules": {
-    "comma-dangle": ["warn", "always-multiline"],
+    "comma-dangle": ["warn", {
+      "arrays": "only-multiline",
+      "objects": "only-multiline",
+      "imports": "only-multiline",
+      "exports": "only-multiline",
+      "functions": "never"
+    }],
     "indent": ["warn", 2],
     "no-unneeded-ternary": ["warn"],
-    "semi": ["warn", "never"]
+    "semi": ["warn", "never"],
+    "jsdoc/require-returns-description": 0
   }
 }
