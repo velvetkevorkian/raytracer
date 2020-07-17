@@ -23,7 +23,7 @@ describe('Hittable', () => {
 
     it('returns null if nothing hits', () => {
       const world = [
-        new Sphere({ position: new Vec3(-1, 0, 0), radius: 0.25 })
+        new Sphere({ position: new Vec3(-1, 0, 0), radius: 0.25 }),
       ]
       const result = Hittable.hitArray({ arr: world, ray, tMin, tMax })
       expect(result).to.be.null
@@ -31,7 +31,7 @@ describe('Hittable', () => {
 
     it('returns a hitrecord object if it hits something', () => {
       const world = [
-        new Sphere({ position: new Vec3(0, 2, 0), radius: 1 })
+        new Sphere({ position: new Vec3(0, 2, 0), radius: 1 }),
       ]
       const result = Hittable.hitArray({ arr: world, ray, tMin, tMax })
       expect(result.t).to.equal(1)

@@ -49,7 +49,7 @@ function buildGeometry(geometry) {
     const { x: nx, y: ny, z: nz } = normal
     return new Plane({
       point: new Vec3(px, py, pz),
-      vector: new Vec3(nx, ny, nz)
+      vector: new Vec3(nx, ny, nz),
     })
   }
 

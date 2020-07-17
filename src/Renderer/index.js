@@ -9,7 +9,7 @@ function rayColor(ray, world, depth) {
     const {
       attenuation,
       scatteredRay,
-     } = hit.material.scatter(hit, ray) || {}
+    } = hit.material.scatter(hit, ray) || {}
 
     if (!attenuation || !scatteredRay) return new Color(0, 0, 0)
     return attenuation.times(rayColor(scatteredRay, world, depth-1))

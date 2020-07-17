@@ -20,8 +20,10 @@ function clamp(x, min, max) {
 
 /**
  * Generate a 2d array of width x height items
- * @param {number} width
- * @param {number} height
+ *
+ * @param {number} width - number of pixels across
+ * @param {number} height - number of pixels down
+ * @returns {Array} an empty 2d array of the specified size
  */
 function buildPixelArray(width, height) {
   return Array.from({ length: height }, () => Array.from({ length: width }))

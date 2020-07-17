@@ -27,7 +27,7 @@ class DielectricMaterial extends Material {
     if (etaiOverEtat * sinTheta > 1) {
       return {
         attenuation: this.color,
-        scatteredRay: new Ray(hit.point, Vec3.reflect(unitDirection, hit.normal))
+        scatteredRay: new Ray(hit.point, Vec3.reflect(unitDirection, hit.normal)),
       }
     }
 
@@ -35,13 +35,13 @@ class DielectricMaterial extends Material {
     if (random() < reflectProb) {
       return {
         attenuation: this.color,
-        scatteredRay: new Ray(hit.point, Vec3.reflect(unitDirection, hit.normal))
+        scatteredRay: new Ray(hit.point, Vec3.reflect(unitDirection, hit.normal)),
       }
     }
 
     return {
       attenuation: this.color,
-      scatteredRay: new Ray(hit.point, refract(unitDirection, hit.normal, etaiOverEtat))
+      scatteredRay: new Ray(hit.point, refract(unitDirection, hit.normal, etaiOverEtat)),
     }
   }
 }

@@ -10,5 +10,5 @@ class Ray {
 }
 
 module.exports = {
-  Ray
+  Ray,
 }
