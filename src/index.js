@@ -1,47 +1,32 @@
+const { cpus } = require('os')
 const { Worker } = require('worker_threads')
 const { Color } = require('./Vec3')
-const config = require('./config')
+const { buildConfig } = require('./World')
+const input = require('../examples/simple.js')
 const {
   buildPixelArray,
   progressBar,
 } = require('./utils')
 const { writePpmFile } = require('./output')
-const { worldAsJson } = require('./World')
 
 function main() {
-  const {
-    imageWidth,
-    aspectRatio,
-    imageHeight,
-    samplesPerPixel,
-    maxDepth,
-    verticalFov,
-    aperture,
-    lookFrom,
-    lookAt,
-    threads,
-    showProgress,
-    progressUpdateFrequency
-  } = config()
+  // TODO wrap this in error checks and set defaults
+  const world = input.world
+  const config = buildConfig(input.config)
+  const { imageHeight, imageWidth } = config
 
+  const threads = cpus().length - 1 // TODO: split out functional config
+  const showProgress = true
+  const progressUpdateFrequency = 1000
   const started = Date.now()
   let progressPercent = 0
   const pixelArray = buildPixelArray(imageWidth, imageHeight)
   const totalPixels = (imageHeight * imageWidth)
   let currentPixel = 0
   let progressUpdateInterval = null
-
   const workerData = {
-    samplesPerPixel,
-    imageWidth,
-    imageHeight,
-    aspectRatio,
-    maxDepth,
-    verticalFov,
-    aperture,
-    lookFrom,
-    lookAt,
-    worldData: worldAsJson,
+    ...config,
+    worldData: world,
   }
 
   function handleMessage(data) {
@@ -98,7 +83,7 @@ function main() {
       for (let i = 0; i < imageWidth; i++) {
         workers[i % threads].postMessage({
           x: i,
-          y: j
+          y: j,
         })
       }
     }

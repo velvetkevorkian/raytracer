@@ -13,18 +13,18 @@ function ppm (data, width, height) {
 function writePpmFile(pixelArray, imageWidth, imageHeight) {
   console.log(`Writing output.ppm at ${imageWidth}x${imageHeight}px`)
   const result = pixelArray
-  .map(i => i
-    .map(j => {
-      try {
-        return j.outputPpmFormat()
-      } catch (err) {
-        console.log()
-        return '0 0 0'
-      }
-    })
-    .join(' '))
-  .reverse()
-  .join('\n')
+    .map(i => i
+      .map(j => {
+        try {
+          return j.outputPpmFormat()
+        } catch (err) {
+          console.error(err)
+          return '0 0 0'
+        }
+      })
+      .join(' '))
+    .reverse()
+    .join('\n')
 
   fs.writeFile('./output.ppm', ppm(result, imageWidth, imageHeight), (err) => {
     if(err) {
