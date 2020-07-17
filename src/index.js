@@ -2,7 +2,7 @@ const { cpus } = require('os')
 const { Worker } = require('worker_threads')
 const { Color } = require('./Vec3')
 const { buildConfig } = require('./World')
-const input = require('../examples/simple.js')
+const input = require('../examples/one-weekend.js')
 const {
   buildPixelArray,
   progressBar,
