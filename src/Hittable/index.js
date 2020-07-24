@@ -21,15 +21,15 @@ class Hittable {
 }
 
 class Plane extends Hittable {
-  constructor({ point, vector, material }) {
+  constructor({ position, vector, material }) {
     super()
-    this.point = point
+    this.position = position
     this.vector = vector
     this.material = material
   }
 
   hit(ray, tMin, tMax) {
-    const { point, vector } = this
+    const { position, vector } = this
     const { direction, origin } = ray
     const discriminant = Vec3.dot(direction, vector)
 
@@ -37,7 +37,7 @@ class Plane extends Hittable {
       // ray and plane are parallel and never intersect
       return null
     }
-    const t = Vec3.dot(point.minus(origin), vector) / discriminant
+    const t = Vec3.dot(position.minus(origin), vector) / discriminant
     const frontFace = Vec3.dot(direction, vector) < 0
 
     if (t < tMin || t > tMax) return null

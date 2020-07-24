@@ -99,14 +99,14 @@ describe('Sphere', () => {
 describe('Plane', () => {
   describe('hit()', () => {
     it('returns null if the ray and the plane are parallel', () => {
-      const plane = new Plane({ point: new Vec3(0, 0, 0), vector: new Vec3(0, 1, 0) })
+      const plane = new Plane({ position: new Vec3(0, 0, 0), vector: new Vec3(0, 1, 0) })
       const ray = new Ray(new Vec3(0, 0, 0), new Vec3(1, 0, 0))
       const result = plane.hit(ray, tMin, tMax)
       expect(result).to.be.null
     })
 
     it("returns a hit record with the plane's normal if hit from the front", () => {
-      const plane = new Plane({ point: new Vec3(0, 0, 0), vector: new Vec3(0, 1, 0) })
+      const plane = new Plane({ position: new Vec3(0, 0, 0), vector: new Vec3(0, 1, 0) })
       const ray = new Ray(new Vec3(0, 1, 0), new Vec3(0, -1, 0))
       const result = plane.hit(ray, tMin, tMax)
       expect(result.frontFace).to.be.true
@@ -114,7 +114,7 @@ describe('Plane', () => {
     })
 
     it("returns the plane's negative normal if hit from the back", () => {
-      const plane = new Plane({ point: new Vec3(0, 0, 0), vector: new Vec3(0, 1, 0) })
+      const plane = new Plane({ position: new Vec3(0, 0, 0), vector: new Vec3(0, 1, 0) })
       const ray = new Ray(new Vec3(0, -1, 0), new Vec3(0, 1, 0))
       const result = plane.hit(ray, tMin, tMax)
       expect(result.frontFace).to.be.true

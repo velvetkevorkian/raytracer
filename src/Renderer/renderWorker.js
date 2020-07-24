@@ -3,7 +3,7 @@ const { Vec3, Color } = require('../Vec3')
 const { rayColor } = require('./index.js')
 const { random } = require('../utils')
 const Camera = require('../Camera')
-const { worldFromJson } = require('../World')
+const { buildWorld } = require('../World')
 
 const {
   samplesPerPixel,
@@ -26,7 +26,7 @@ const camera = new Camera({
   aperture,
 })
 
-const world = worldFromJson(worldData)
+const world = buildWorld(worldData)
 
 parentPort.on('message', data => {
   const { x, y } = data

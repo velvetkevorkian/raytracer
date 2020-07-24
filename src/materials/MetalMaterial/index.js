@@ -1,10 +1,10 @@
 const Material = require('../Material.js')
-const { Vec3 } = require('../../Vec3')
+const { Vec3, Color } = require('../../Vec3')
 const { Ray } = require('../../Ray')
 const { clamp } = require('../../utils')
 
 class MetalMaterial extends Material {
-  constructor(color, fuzz = 0) {
+  constructor(color = new Color(1, 1, 1), fuzz = 0) {
     super()
     this.color = color
     this.fuzz = clamp(fuzz, 0, 1)

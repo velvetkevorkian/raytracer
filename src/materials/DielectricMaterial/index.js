@@ -10,10 +10,10 @@ class DielectricMaterial extends Material {
    * @param {number} [refractiveIndex = 1] - a higher refractive index means more rays refract and less reflect
    * @param {Vec3} [color = new Color(1, 1, 1)] - the material's color
    */
-  constructor(refractiveIndex, color) {
+  constructor(refractiveIndex = 1, color = new Color(1, 1, 1)) {
     super()
-    this.color = color || new Color(1, 1, 1)
-    this.refractiveIndex = refractiveIndex || 1
+    this.color = color
+    this.refractiveIndex = refractiveIndex
   }
 
   scatter(hit, ray) {
