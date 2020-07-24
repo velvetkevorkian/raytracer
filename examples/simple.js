@@ -7,7 +7,7 @@ module.exports = {
     verticalFov: 90,
     aperture: 0,
     lookFrom: [0, 0, -2],
-    lookAt: [0, 0, 0]
+    lookAt: [0, 0, 0],
   },
   world: [
     {
@@ -18,8 +18,8 @@ module.exports = {
       },
       material: {
         type: 'DiffuseMaterial',
-        color: { r: 0.5, g: 0.5, b: 0.5 }
-      }
-    }
-  ]
+        color: { r: 0.5, g: 0.5, b: 0.5 },
+      },
+    },
+  ],
 }
