@@ -8,6 +8,7 @@ describe('buildConfig()', () => {
     expect(result).to.eql({
       aperture: 0,
       aspectRatio: 1.7777777777777777,
+      depthPass: false,
       imageHeight: 360,
       imageWidth: 640,
       lookAt: [0, 0, 0],
@@ -23,6 +24,7 @@ describe('buildConfig()', () => {
     expect(result).to.eql({
       aperture: 1,
       aspectRatio: 1.7777777777777777,
+      depthPass: false,
       imageHeight: 90,
       imageWidth: 160,
       lookAt: [0, 0, 0],

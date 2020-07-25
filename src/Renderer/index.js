@@ -21,6 +21,13 @@ function rayColor(ray, world, depth) {
     .plus(new Color(0.5, 0.7, 1).times(bg))
 }
 
+function depth(ray, world) {
+  const hit = Hittable.hitArray({ arr: world, ray, tMin: 0.0001, tMax: Infinity})
+  if (hit) return hit.t
+  return null
+}
+
 module.exports = {
   rayColor,
+  depth,
 }

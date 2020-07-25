@@ -4,6 +4,7 @@ const {
   buildPixelArray,
   clamp,
   degreesToRadians,
+  map,
   progressBar,
   radiansToDegrees,
   random,
@@ -61,5 +62,12 @@ describe('utils', () => {
 
   it('degreesToRadians', () => {
     expect(degreesToRadians(180)).to.equal(Math.PI)
+  })
+
+  describe('map', () => {
+    it('remaps values', () => {
+      const result = map(10, 0, 20, 0, 2)
+      expect(result).to.equal(1)
+    })
   })
 })

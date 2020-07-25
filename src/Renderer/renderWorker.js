@@ -1,6 +1,6 @@
 const { workerData, parentPort } = require('worker_threads')
 const { Vec3, Color } = require('../Vec3')
-const { rayColor } = require('./index.js')
+const { rayColor, depth } = require('./index.js')
 const { random } = require('../utils')
 const Camera = require('../Camera')
 const { buildWorld } = require('../World')
@@ -16,6 +16,7 @@ const {
   lookFrom,
   lookAt,
   worldData,
+  depthPass,
 } = workerData
 
 const camera = new Camera({
@@ -30,7 +31,7 @@ const world = buildWorld(worldData)
 
 parentPort.on('message', data => {
   const { x, y } = data
-  renderPixel(x, y)
+  depthPass ? renderDepth(x, y) : renderPixel(x, y)
 })
 
 function renderPixel(x, y) {
@@ -48,6 +49,21 @@ function renderPixel(x, y) {
 
   parentPort.postMessage({
     r, g, b,
+    x, y,
+  })
+}
+
+function renderDepth(x, y) {
+  let t = 0
+  for(let s = 0; s < samplesPerPixel; s ++) {
+    const u = (x + random()) / (imageWidth - 1)
+    const v = (y + random()) / (imageHeight - 1)
+    const ray = camera.getRay(u, v)
+    t = t + depth(ray, world)
+  }
+
+  parentPort.postMessage({
+    t: t / samplesPerPixel,
     x, y,
   })
 }

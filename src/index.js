@@ -2,10 +2,12 @@ const { cpus } = require('os')
 const { Worker } = require('worker_threads')
 const { Color } = require('./Vec3')
 const { buildConfig } = require('./World')
-const input = require('../examples/one-weekend.js')
+const input = require('../examples/depth-pass.js')
 const {
   buildPixelArray,
+  map,
   progressBar,
+  clamp,
 } = require('./utils')
 const { writePpmFile } = require('./output')
 
@@ -13,14 +15,14 @@ function main() {
   // TODO wrap this in error checks and set defaults
   const world = input.world
   const config = buildConfig(input.config)
-  const { imageHeight, imageWidth } = config
+  const { imageHeight, imageWidth, depthPass } = config
 
   const threads = cpus().length - 1 // TODO: split out functional config
   const showProgress = true
   const progressUpdateFrequency = 1000
   const started = Date.now()
   let progressPercent = 0
-  const pixelArray = buildPixelArray(imageWidth, imageHeight)
+  let pixelArray = buildPixelArray(imageWidth, imageHeight)
   const totalPixels = (imageHeight * imageWidth)
   let currentPixel = 0
   let progressUpdateInterval = null
@@ -30,7 +32,9 @@ function main() {
   }
 
   function handleMessage(data) {
-    pixelArray[data.y][data.x] = new Color(data.r, data.g, data.b)
+    pixelArray[data.y][data.x] = depthPass
+      ? data.t
+      : new Color(data.r, data.g, data.b)
 
     currentPixel ++
 
@@ -40,6 +44,7 @@ function main() {
       if (showProgress) process.stdout.write(`\r\n`)
       const totalTime = (Date.now() - started) / 1000
       console.log(`Rendered ${totalPixels.toLocaleString('en-GB')} pixels in ${totalTime} seconds`)
+      if (depthPass) pixelArray = mapDepthToColor(pixelArray, imageWidth, imageHeight)
       writePpmFile(pixelArray, imageWidth, imageHeight)
     }
   }
@@ -88,6 +93,28 @@ function main() {
       }
     }
   }
+}
+
+function mapDepthToColor(pixelArray, imageWidth, imageHeight) {
+  const flattened = pixelArray
+    .flat()
+    .sort()
+
+  const furthest = flattened[Math.floor(flattened.length * 0.95)]
+
+  for (let j = 0; j < imageHeight; j ++ ) {
+    for (let i = 0; i < imageWidth; i ++) {
+      let col
+      if (!pixelArray[j][i]) {
+        col = 0
+      } else {
+        col = clamp(map(pixelArray[j][i], 0, furthest, 1, 0), 0, 1)
+      }
+
+      pixelArray[j][i] = new Color(col, col, col)
+    }
+  }
+  return pixelArray
 }
 
 main()

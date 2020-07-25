@@ -37,10 +37,15 @@ function radiansToDegrees(rad) {
   return rad * (180/Math.PI)
 }
 
+function map(x, low1, high1, low2, high2) {
+  return low2 + (x - low1) * (high2 - low2) / (high1 - low1)
+}
+
 module.exports = {
   buildPixelArray,
   clamp,
   degreesToRadians,
+  map,
   progressBar,
   radiansToDegrees,
   random,
